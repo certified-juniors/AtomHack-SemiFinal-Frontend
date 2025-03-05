@@ -1,2 +1,3 @@
-export { Spaces } from './Spaces'
-export { FlowChart } from './FlowChart'
+export { Spaces } from './Spaces';
+
+export { FlowChart } from './FlowChart';
