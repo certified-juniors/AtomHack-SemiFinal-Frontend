@@ -1,54 +1,43 @@
-# React + TypeScript + Vite
+# АТОМХАК | МАТРИЦА ПОТОКОВ | Фронтенд
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## О проекте
 
-Currently, two official plugins are available:
+**Библиотека:** React 19.0.0
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**UIKit:** Mantine 7.17.1
 
-## Expanding the ESLint configuration
+**Сборщик**: Vite 6.2.0
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Основные подходы к разработке:**
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- методология [FSD](https://https://feature-sliced.design/)
+- [scss + css-модули](https://medium.com/clover-platform-blog/modular-scss-and-why-you-need-it-6bb2d8c40fd8)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Линтеры:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Eslint 9.21.0
+- Prettier 3.5.3
+- Stylelint 16.15.0
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+**Команды:**
+
+- **dev**: Запуск локального сервера для разработки.
+- **build**: Компиляция TypeScript и сборка проекта для продакшена.
+- **preview**: Предпросмотр собранного проекта.
+- **check:eslint**: Проверка кода с помощью Eslint.
+- **check:tsc**: Проверка TypeScript без генерации файлов.
+- **check:styles**: Проверка стилей с помощью Stylelint.
+- **check:all**: Запуск всех проверок (Eslint, TypeScript, Stylelint).
+- **fix:eslint**: Автоматическое исправление проблем в коде с помощью Eslint.
+- **fix:styles**: Автоматическое исправление проблем в стилях с помощью Stylelint.
+- **fix:all**: Автоматическое исправление всех проблем (Eslint, Stylelint).
+
+**Название веток:**
+
+- `/feature/<task_number>` - внедрение новой функциональности
+- `/bugfix/<task_number>` - устранение ошибки
+
+**Сообщения коммитов:**
+
+- `feat: <commit_message>`
+- `fix: <commit_message>`
