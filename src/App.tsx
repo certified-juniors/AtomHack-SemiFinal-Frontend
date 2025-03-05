@@ -5,11 +5,11 @@ import { FlowChart, Spaces } from './pages';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { FlowChart, Spaces } from './pages'
 import { MantineProvider } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
 
 import '@mantine/core/styles.css';
 import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
-import { Notifications } from '@mantine/notifications'
 
 function App() {
   return (
