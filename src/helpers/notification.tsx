@@ -20,7 +20,6 @@ const NOTIFICATION_PARAMS: Record<NOTIFICATION_VARIANT, INotificationParam> = {
     title: 'Предупреждение',
   },
   [NOTIFICATION_VARIANT.LOADING]: {
-    color: 'gray',
     title: 'Загрузка',
   },
   [NOTIFICATION_VARIANT.DEFAULT]: {
@@ -37,7 +36,7 @@ function showNotification({
   const params = NOTIFICATION_PARAMS[variant] || NOTIFICATION_PARAMS[NOTIFICATION_VARIANT.DEFAULT]
 
   notifications.show({
-    title: params.title ?? '',
+    title: params.title,
     message: isLoading ? 'Загрузка данных...' : message,
     color: isLoading ? 'gray' : params.color,
     icon: params.icon ?? '',
