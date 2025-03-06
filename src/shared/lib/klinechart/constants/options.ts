@@ -1,13 +1,12 @@
-import type { DeepPartial, Options } from 'klinecharts';
-import { CandleType, TooltipShowRule } from 'klinecharts';
+import { CandleType, DeepPartial, Options, TooltipShowRule } from "klinecharts";
 
 export const OPTIONS: DeepPartial<Options> = {
-    styles: {
-        candle: {
-            type: CandleType.Area,
-            tooltip: {
-                showRule: TooltipShowRule.None,
-            },
-        },
-    },
-};
+  styles: {
+    candle: {
+      type: CandleType.Area,
+      tooltip: {
+        showRule: TooltipShowRule.None
+      }
+    }
+  }
+}
