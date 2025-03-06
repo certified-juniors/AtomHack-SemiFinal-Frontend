@@ -1,9 +1,7 @@
-import { useParams } from "react-router-dom"
+import { useParams } from 'react-router-dom';
 
 export const FlowChart = () => {
-  const { id } = useParams();
+    const { id } = useParams();
 
-  return (
-    <>Flow Chart {id}</>
-  )
-}
+    return <>Flow Chart {id}</>;
+};
