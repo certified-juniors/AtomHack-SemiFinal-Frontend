@@ -1,5 +1,5 @@
 import { Button, Text } from '@mantine/core';
-
+import cn from 'classnames';
 import { EditSpaceModal, AddSpaceModal, SpaceList, Space } from '../../entities/space';
 
 import styles from './styles.module.scss';
@@ -65,7 +65,9 @@ export const Navbar = () => {
                     Пространства
                 </Button>
             </div>
-            <div className={`${styles.secondNavbar} ${toolsOpen ? styles.open : ''}`}>
+            <div
+                className={cn(styles.secondNavbar, toolsOpen && styles.open)}
+            >
                 <Text size="xl">Пространства</Text>
                 <SpaceList
                     currentSpaceId={id}
