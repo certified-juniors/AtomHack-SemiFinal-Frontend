@@ -34,25 +34,6 @@ const Navbar = () => {
     return (
         <div className={styles.navbarWrapper}>
             <div className={styles.mainNavbar}>
-                {/* <div>
-                    <Text size="xl">Пространства</Text>
-                    <SpaceList
-                        currentSpaceId={state?.id}
-                        spaces={state.spaces}
-                        onSelect={state.selectSpace}
-                        onEdit={state.setEditingSpaceId}
-                        onDelete={handleDeleteSpace}
-                    />
-                    <Button onClick={() => state.setOpened(true)}>Добавить пространство</Button>
-                </div>
-
-                <Button
-                    className={styles.toolsButton}
-                    onClick={() => state.setToolsOpen(!state.toolsOpen)}
-                >
-                    Инструменты
-                </Button> */}
-
                 <ToolsPanel
                     toolsOpen={state.toolsOpen}
                     toggleTools={() => state.setToolsOpen(!state.toolsOpen)}
