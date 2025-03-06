@@ -12,7 +12,7 @@
 
 - методология [FSD](https://https://feature-sliced.design/)
 - [scss + css-модули](https://medium.com/clover-platform-blog/modular-scss-and-why-you-need-it-6bb2d8c40fd8)
-
+- иконки [@tabler/icons-react](https://tabler.io/icons)
 **Линтеры:**
 
 - Eslint 9.21.0

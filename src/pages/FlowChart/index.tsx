@@ -1,10 +1,9 @@
-import { Navbar } from "./components";
+import { Navbar } from '../../widgets';
 
 export const FlowChart = () => {
-
-  return (
-    <>
-      <Navbar />
-    </>
-  );
+    return (
+        <>
+            <Navbar />
+        </>
+    );
 };
