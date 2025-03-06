@@ -1,11 +1,6 @@
+import { Space } from '../../entities/space';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
-export type Space = {
-    id: number;
-    name: string;
-    tanksCount: number;
-};
 
 export const useNavbarState = () => {
     const { id } = useParams();

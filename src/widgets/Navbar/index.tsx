@@ -1,11 +1,10 @@
 import { Button, Text } from '@mantine/core';
 import styles from './styles.module.scss';
-import { EditSpaceModal, AddSpaceModal } from './components/SpaceModals';
-import { SpaceList } from './components/SpaceList';
-import { ToolsPanel } from './components/SpaceToolbar';
-import { useNavbarState } from './service';
+import { EditSpaceModal, AddSpaceModal, SpaceList } from '../../entities/space';
+import { ToolsPanel } from './ui/SpaceToolbar';
+import { useNavbarState } from './hooks';
 
-const Navbar = () => {
+export const Navbar = () => {
     const state = useNavbarState();
 
     const handleAddSpace = () => {
@@ -71,5 +70,3 @@ const Navbar = () => {
         </div>
     );
 };
-
-export { Navbar };

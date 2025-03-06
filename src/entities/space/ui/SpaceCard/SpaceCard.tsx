@@ -1,36 +1,7 @@
 import { Group, ActionIcon, Text } from '@mantine/core';
-import { Space } from '../service';
-import { IconTrash, IconEdit } from '@tabler/icons-react';
-import styles from '../styles.module.scss';
-
-interface SpaceListProps {
-    spaces: Space[];
-    currentSpaceId?: number | string;
-    onSelect: (id: number) => void;
-    onEdit: (id: number, name: string) => void;
-    onDelete: (id: number) => void;
-}
-
-export const SpaceList: React.FC<SpaceListProps> = ({
-    spaces,
-    onSelect,
-    onEdit,
-    onDelete,
-    currentSpaceId,
-}) => (
-    <div className={styles.spaceList}>
-        {spaces.map((space) => (
-            <SpaceCard
-                key={space.id}
-                isSelected={space.id == currentSpaceId}
-                space={space}
-                onSelect={onSelect}
-                onEdit={onEdit}
-                onDelete={onDelete}
-            />
-        ))}
-    </div>
-);
+import { Space } from '../../model';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
+import styles from './SpaceCard.module.scss';
 
 interface SpaceCardProps {
     space: Space;

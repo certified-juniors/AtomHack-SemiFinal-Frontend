@@ -1,5 +1,4 @@
 import { Stack, Button } from '@mantine/core';
-import styles from '../styles.module.scss';
 
 interface ToolsPanelProps {
     toolsOpen: boolean;
