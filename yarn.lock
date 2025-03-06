@@ -2072,6 +2072,11 @@ keyv@^4.5.4:
   dependencies:
     json-buffer "3.0.1"
 
+klinecharts@^10.0.0-alpha4:
+  version "10.0.0-alpha4"
+  resolved "https://registry.yarnpkg.com/klinecharts/-/klinecharts-10.0.0-alpha4.tgz#d106e085e1506d8604e1a29afa37f6801caa5703"
+  integrity sha512-RURw0RNMdaxuJzW2AVwbuuVkEbtEnX5UyvieaRoXS+dL9hRAxx1ri4pcSG5BJRzf0hk33WWg7HTj7B8Ml5m+mg==
+
 keyv@^5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/keyv/-/keyv-5.3.1.tgz#d3acebeecedafd4bf2b929e8866bcd79db071f1e"
