@@ -23,7 +23,9 @@ export const SpaceCard: React.FC<SpaceCardProps> = ({
     <div
         className={isSelected ? styles.selectedCard : styles.card}
         onClick={() => {
-            onSelect(space.id);
+            () => {
+                onSelect(space.id);
+            }
         }}
     >
         <div>

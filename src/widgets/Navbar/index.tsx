@@ -1,76 +1,95 @@
 import { Button, Text } from '@mantine/core';
 
-import { EditSpaceModal, AddSpaceModal, SpaceList } from '../../entities/space';
+import { EditSpaceModal, AddSpaceModal, SpaceList, Space } from '../../entities/space';
 
-import { useNavbarState } from './hooks';
 import styles from './styles.module.scss';
 import { ToolsPanel } from './ui/SpaceToolbar';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
 
 export const Navbar = () => {
-    const state = useNavbarState();
+    const { id } = useParams();
+    const navigate = useNavigate();
+
+    const selectSpace = (id: number | string) => {
+        navigate(`/space/${id}`);
+    };
+    const [spaces, setSpaces] = useState<Space[]>([
+        { id: 1, name: 'Пространство 1', createdAt: '22.01.2025' },
+        { id: 2, name: 'Пространство 2', createdAt: '22.01.2025' },
+    ]);
+    const [opened, setOpened] = useState(false);
+    const [newSpaceName, setNewSpaceName] = useState('');
+    const [editedSpaceName, setEditedSpaceName] = useState('');
+    const [editingSpaceId, setEditingSpaceId] = useState<number | null>(null);
+    const [toolsOpen, setToolsOpen] = useState(false);
 
     const handleAddSpace = () => {
-        state.setSpaces([
-            ...state.spaces,
+        setSpaces([
+            ...spaces,
             {
-                id: state.spaces.length + 1,
-                name: state.newSpaceName,
+                id: spaces.length + 1,
+                name: newSpaceName,
                 createdAt: new Date().toLocaleDateString(),
             },
         ]);
-        state.setNewSpaceName('');
-        state.setOpened(false);
+        setNewSpaceName('');
+        setOpened(false);
     };
 
     const handleDeleteSpace = (id: number) => {
-        state.setSpaces(state.spaces.filter((space) => space.id !== id));
+        setSpaces(spaces.filter((space) => space.id !== id));
     };
 
     const handleEditSpace = (id: number) => {
-        state.setSpaces(
-            state.spaces.map((space) =>
-                space.id === id ? { ...space, name: state.editedSpaceName } : space
+        setSpaces(
+            spaces.map((space) =>
+                space.id === id ? { ...space, name: editedSpaceName } : space
             )
         );
-        state.setEditingSpaceId(null);
-        state.setEditedSpaceName('');
+        setEditingSpaceId(null);
+        setEditedSpaceName('');
     };
 
     return (
         <div className={styles.navbarWrapper}>
             <div className={styles.mainNavbar}>
                 <ToolsPanel
-                    toolsOpen={state.toolsOpen}
-                    toggleTools={() => state.setToolsOpen(!state.toolsOpen)}
+                    toolsOpen={toolsOpen}
+                    toggleTools={() => setToolsOpen(!toolsOpen)}
                 />
                 <Button
                     className={styles.toolsButton}
-                    onClick={() => state.setToolsOpen(!state.toolsOpen)}
+                    onClick={() => setToolsOpen(!toolsOpen)}
                 >
                     Пространства
                 </Button>
             </div>
-            <div className={`${styles.secondNavbar} ${state.toolsOpen ? styles.open : ''}`}>
+            <div className={`${styles.secondNavbar} ${toolsOpen ? styles.open : ''}`}>
                 <Text size="xl">Пространства</Text>
                 <SpaceList
-                    currentSpaceId={state.id}
-                    spaces={state.spaces}
-                    onSelect={state.selectSpace}
-                    onEdit={state.setEditingSpaceId}
+                    currentSpaceId={id}
+                    spaces={spaces}
+                    onSelect={selectSpace}
+                    onEdit={setEditingSpaceId}
                     onDelete={handleDeleteSpace}
                 />
-                <Button onClick={() => state.setOpened(true)}>Добавить пространство</Button>
+                <Button onClick={() => setOpened(true)}>Добавить пространство</Button>
             </div>
 
             <AddSpaceModal
-                {...state}
-                onClose={() => state.setOpened(false)}
+                opened={opened}
+                newSpaceName={newSpaceName}
+                setNewSpaceName={setNewSpaceName}
+                onClose={() => setOpened(false)}
                 onAdd={handleAddSpace}
             />
 
             <EditSpaceModal
-                {...state}
-                onClose={() => state.setEditingSpaceId(null)}
+                editedSpaceName={editedSpaceName}
+                editingSpaceId={editingSpaceId}
+                setEditedSpaceName={setEditedSpaceName}
+                onClose={() => setEditingSpaceId(null)}
                 onEdit={handleEditSpace}
             />
         </div>
