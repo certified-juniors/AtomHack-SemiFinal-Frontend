@@ -1,4 +1,4 @@
 export type DataType = {
-  value: number,
-  timestamp: number
-}
+    value: number;
+    timestamp: number;
+};
