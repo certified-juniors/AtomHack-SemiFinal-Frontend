@@ -1,7 +1,6 @@
 import { Button, Center, Flex, Text } from '@mantine/core';
-import React from 'react';
 
-import type { ErrorPageProps } from '@/src/pages/ErrorPage/types';
+import type { ErrorPageProps } from './types';
 
 export const ErrorPage: React.FC<ErrorPageProps> = ({ title, subtitle, onClick, buttonText }) => {
     return (

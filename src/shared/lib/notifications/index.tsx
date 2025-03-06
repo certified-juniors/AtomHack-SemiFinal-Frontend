@@ -1,11 +1,8 @@
 import { notifications } from '@mantine/notifications';
 import { IoAlertOutline, IoCheckmark } from 'react-icons/io5';
 
-import type {
-    INotificationParam,
-    IShowNotificationProps,
-} from '@/src/shared/lib/notifications/types';
-import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
+import type { INotificationParam, IShowNotificationProps } from './types';
+import { NOTIFICATION_VARIANT } from './types';
 
 const NOTIFICATION_PARAMS: Record<NOTIFICATION_VARIANT, INotificationParam> = {
     [NOTIFICATION_VARIANT.SUCCESS]: {

@@ -1,8 +1,8 @@
+import { showNotification } from '@mantine/notifications';
 import type { AxiosError } from 'axios';
 import axios from 'axios';
 
-import showNotification from '@/src/shared/lib/notifications';
-import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
+import { NOTIFICATION_VARIANT } from '../lib/notifications/types';
 
 const API_URL: string = import.meta.env.VITE_MAIN_ENDPOINT as string;
 
