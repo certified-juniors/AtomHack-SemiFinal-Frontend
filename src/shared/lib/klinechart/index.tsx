@@ -13,14 +13,16 @@ type ChartProps = {
 
 export const Chart = ({ id, data = [], style }: ChartProps) => {
     useEffect(() => {
-        const chart = init(id, OPTIONS);
+        const chartInstance = init(id, OPTIONS);
 
-        if (chart) {
-            chart.applyNewData(formatDataToKline(data));
+        if (chartInstance != null) {
+            chartInstance.applyNewData(formatDataToKline(data));
         }
 
         return () => {
-            dispose(id);
+            if (chartInstance != null) {
+                dispose(id);
+            }
         };
     }, [id, data]);
 
