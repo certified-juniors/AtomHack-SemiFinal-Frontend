@@ -1,9 +1,10 @@
-import { useParams } from "react-router-dom"
+import { Navbar } from "./components";
 
 export const FlowChart = () => {
-  const { id } = useParams();
 
   return (
-    <>Flow Chart {id}</>
-  )
-}
+    <>
+      <Navbar />
+    </>
+  );
+};
