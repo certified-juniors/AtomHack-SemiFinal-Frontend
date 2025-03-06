@@ -1,8 +1,10 @@
 import { Button, Text } from '@mantine/core';
-import styles from './styles.module.scss';
+
 import { EditSpaceModal, AddSpaceModal, SpaceList } from '../../entities/space';
-import { ToolsPanel } from './ui/SpaceToolbar';
+
 import { useNavbarState } from './hooks';
+import styles from './styles.module.scss';
+import { ToolsPanel } from './ui/SpaceToolbar';
 
 export const Navbar = () => {
     const state = useNavbarState();
@@ -10,7 +12,11 @@ export const Navbar = () => {
     const handleAddSpace = () => {
         state.setSpaces([
             ...state.spaces,
-            { id: state.spaces.length + 1, name: state.newSpaceName, tanksCount: 0 },
+            {
+                id: state.spaces.length + 1,
+                name: state.newSpaceName,
+                createdAt: new Date().toLocaleDateString(),
+            },
         ]);
         state.setNewSpaceName('');
         state.setOpened(false);

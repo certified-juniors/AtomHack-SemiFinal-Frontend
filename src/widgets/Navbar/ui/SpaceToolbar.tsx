@@ -1,9 +1,9 @@
 import { Stack, Button } from '@mantine/core';
 
-interface ToolsPanelProps {
+type ToolsPanelProps = {
     toolsOpen: boolean;
     toggleTools?: () => void;
-}
+};
 
 export const ToolsPanel: React.FC<ToolsPanelProps> = ({ toolsOpen }) => (
     <Stack>

@@ -1,14 +1,15 @@
+import type { Space } from '../../';
 import { SpaceCard } from '../SpaceCard';
-import { Space } from '../../';
+
 import styles from './SpaceList.module.scss';
 
-interface SpaceListProps {
+type SpaceListProps = {
     spaces: Space[];
     currentSpaceId?: number | string;
     onSelect: (id: number) => void;
     onEdit: (id: number, name: string) => void;
     onDelete: (id: number) => void;
-}
+};
 
 export const SpaceList: React.FC<SpaceListProps> = ({
     spaces,

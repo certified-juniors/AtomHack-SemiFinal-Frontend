@@ -1,15 +1,17 @@
 import { Group, ActionIcon, Text } from '@mantine/core';
-import { Space } from '../../model';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
+
+import type { Space } from '../../model';
+
 import styles from './SpaceCard.module.scss';
 
-interface SpaceCardProps {
+type SpaceCardProps = {
     space: Space;
     isSelected: boolean;
     onSelect: (id: number) => void;
     onEdit: (id: number, name: string) => void;
     onDelete: (id: number) => void;
-}
+};
 
 export const SpaceCard: React.FC<SpaceCardProps> = ({
     space,
@@ -26,7 +28,7 @@ export const SpaceCard: React.FC<SpaceCardProps> = ({
     >
         <div>
             <Text size="lg">{space.name}</Text>
-            <Text size="md">Количество резервуаров: {space.tanksCount}</Text>
+            <Text size="sm">Дата создания: {space.createdAt}</Text>
         </div>
         <Group justify="flex-end">
             <ActionIcon

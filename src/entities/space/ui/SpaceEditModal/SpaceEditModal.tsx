@@ -1,12 +1,12 @@
 import { Button, Group, Modal, Stack, TextInput } from '@mantine/core';
 
-interface EditSpaceModalProps {
+type EditSpaceModalProps = {
     editingSpaceId: number | null;
     onClose: () => void;
     editedSpaceName: string;
     setEditedSpaceName: (name: string) => void;
     onEdit: (id: number) => void;
-}
+};
 
 export const EditSpaceModal: React.FC<EditSpaceModalProps> = ({
     editingSpaceId,

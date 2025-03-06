@@ -1,12 +1,12 @@
 import { Modal, Stack, TextInput, Group, Button } from '@mantine/core';
 
-interface AddSpaceModalProps {
+type AddSpaceModalProps = {
     opened: boolean;
     onClose: () => void;
     newSpaceName: string;
     setNewSpaceName: (name: string) => void;
     onAdd: () => void;
-}
+};
 
 export const AddSpaceModal: React.FC<AddSpaceModalProps> = ({
     opened,

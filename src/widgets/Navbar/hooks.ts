@@ -1,6 +1,7 @@
-import { Space } from '../../entities/space';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+
+import type { Space } from '../../entities/space';
 
 export const useNavbarState = () => {
     const { id } = useParams();
@@ -10,8 +11,8 @@ export const useNavbarState = () => {
         navigate(`/space/${id}`);
     };
     const [spaces, setSpaces] = useState<Space[]>([
-        { id: 1, name: 'Пространство 1', tanksCount: 10 },
-        { id: 2, name: 'Пространство 2', tanksCount: 5 },
+        { id: 1, name: 'Пространство 1', createdAt: '22.01.2025' },
+        { id: 2, name: 'Пространство 2', createdAt: '22.01.2025' },
     ]);
     const [opened, setOpened] = useState(false);
     const [newSpaceName, setNewSpaceName] = useState('');
