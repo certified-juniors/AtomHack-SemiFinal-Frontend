@@ -1036,6 +1036,11 @@ keyv@^4.5.4:
   dependencies:
     json-buffer "3.0.1"
 
+klinecharts@^10.0.0-alpha4:
+  version "10.0.0-alpha4"
+  resolved "https://registry.yarnpkg.com/klinecharts/-/klinecharts-10.0.0-alpha4.tgz#d106e085e1506d8604e1a29afa37f6801caa5703"
+  integrity sha512-RURw0RNMdaxuJzW2AVwbuuVkEbtEnX5UyvieaRoXS+dL9hRAxx1ri4pcSG5BJRzf0hk33WWg7HTj7B8Ml5m+mg==
+
 levn@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/levn/-/levn-0.4.1.tgz#ae4562c007473b932a6200d403268dd2fffc6ade"

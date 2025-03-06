@@ -12,6 +12,7 @@
   "dependencies": {
     "@mantine/core": "^7.17.1",
     "@mantine/hooks": "^7.17.1",
+    "klinecharts": "^10.0.0-alpha4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0"
