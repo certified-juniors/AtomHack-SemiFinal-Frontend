@@ -24,6 +24,7 @@ export const flowReducer = (state: FlowState, action: FlowAction): FlowState => 
                     {
                         id: nanoid(),
                         position: { x: 100, y: 100 },
+                        type: 'reservoir',
                         data: { label: 'Node' },
                         ...action.payload,
                     },
