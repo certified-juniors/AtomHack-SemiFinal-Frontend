@@ -1,15 +1,16 @@
 import { Group, ActionIcon, Text } from '@mantine/core';
-import { Space } from '../service';
 import { IconTrash, IconEdit } from '@tabler/icons-react';
+
+import type { Space } from '../service';
 import styles from '../styles.module.scss';
 
-interface SpaceListProps {
+type SpaceListProps = {
     spaces: Space[];
     currentSpaceId?: number | string;
     onSelect: (id: number) => void;
     onEdit: (id: number, name: string) => void;
     onDelete: (id: number) => void;
-}
+};
 
 export const SpaceList: React.FC<SpaceListProps> = ({
     spaces,
@@ -32,13 +33,13 @@ export const SpaceList: React.FC<SpaceListProps> = ({
     </div>
 );
 
-interface SpaceCardProps {
+type SpaceCardProps = {
     space: Space;
     isSelected: boolean;
     onSelect: (id: number) => void;
     onEdit: (id: number, name: string) => void;
     onDelete: (id: number) => void;
-}
+};
 
 export const SpaceCard: React.FC<SpaceCardProps> = ({
     space,

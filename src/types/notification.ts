@@ -1,14 +1,15 @@
-import { ReactNode } from 'react'
-import { NOTIFICATION_VARIANT } from '../constants/variant.ts'
+import type { ReactNode } from 'react';
 
-export interface INotificationParam {
-  color?: string
-  icon?: ReactNode
-  title: string
-}
+import type { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
 
-export interface IShowNotificationProps {
-  variant?: NOTIFICATION_VARIANT
-  message?: string
-  isLoading?: boolean
-}
+export type INotificationParam = {
+    color?: string;
+    icon?: ReactNode;
+    title: string;
+};
+
+export type IShowNotificationProps = {
+    variant?: NOTIFICATION_VARIANT;
+    message?: string;
+    isLoading?: boolean;
+};
