@@ -1,4 +1,4 @@
 export type ChartStylesType = {
-    width?: string;
-    height?: string;
-};
+  width?: string,
+  height?: string,
+}

@@ -13,18 +13,18 @@ type ChartProps = {
 
 export const Chart = ({ id, data = [], style }: ChartProps) => {
     useEffect(() => {
-        const chartInstance = init(id, OPTIONS);
+        const chart = init(id, OPTIONS);
 
-        if (chartInstance != null) {
-            chartInstance.applyNewData(formatDataToKline(data));
+        if (chart) {
+            chart.applyNewData(formatDataToKline(data));
         }
 
         return () => {
-            if (chartInstance != null) {
-                dispose(id);
-            }
+            dispose(id);
         };
     }, [id, data]);
 
-    return <div id={id} style={style} />;
-};
+  return (
+    <div id={id} style={style} />
+  )
+}
