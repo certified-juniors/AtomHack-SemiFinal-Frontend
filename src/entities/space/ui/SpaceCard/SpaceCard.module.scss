@@ -1,0 +1,22 @@
+.card {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .selectedCard {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #d3f9d8;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+  
