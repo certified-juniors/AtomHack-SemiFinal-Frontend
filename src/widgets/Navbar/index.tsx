@@ -1,11 +1,13 @@
 import { Button, Text } from '@mantine/core';
 import cn from 'classnames';
-import { EditSpaceModal, AddSpaceModal, SpaceList, Space } from '../../entities/space';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import type { Space } from '../../entities/space';
+import { EditSpaceModal, AddSpaceModal, SpaceList } from '../../entities/space';
 
 import styles from './styles.module.scss';
 import { ToolsPanel } from './ui/SpaceToolbar';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
 
 export const Navbar = () => {
     const { id } = useParams();
@@ -43,9 +45,7 @@ export const Navbar = () => {
 
     const handleEditSpace = (id: number) => {
         setSpaces(
-            spaces.map((space) =>
-                space.id === id ? { ...space, name: editedSpaceName } : space
-            )
+            spaces.map((space) => (space.id === id ? { ...space, name: editedSpaceName } : space))
         );
         setEditingSpaceId(null);
         setEditedSpaceName('');
@@ -54,20 +54,12 @@ export const Navbar = () => {
     return (
         <div className={styles.navbarWrapper}>
             <div className={styles.mainNavbar}>
-                <ToolsPanel
-                    toolsOpen={toolsOpen}
-                    toggleTools={() => setToolsOpen(!toolsOpen)}
-                />
-                <Button
-                    className={styles.toolsButton}
-                    onClick={() => setToolsOpen(!toolsOpen)}
-                >
+                <ToolsPanel toolsOpen={toolsOpen} toggleTools={() => setToolsOpen(!toolsOpen)} />
+                <Button className={styles.toolsButton} onClick={() => setToolsOpen(!toolsOpen)}>
                     Пространства
                 </Button>
             </div>
-            <div
-                className={cn(styles.secondNavbar, toolsOpen && styles.open)}
-            >
+            <div className={cn(styles.secondNavbar, toolsOpen && styles.open)}>
                 <Text size="xl">Пространства</Text>
                 <SpaceList
                     currentSpaceId={id}

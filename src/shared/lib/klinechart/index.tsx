@@ -24,7 +24,5 @@ export const Chart = ({ id, data = [], style }: ChartProps) => {
         };
     }, [id, data]);
 
-  return (
-    <div id={id} style={style} />
-  )
-}
+    return <div id={id} style={style} />;
+};
