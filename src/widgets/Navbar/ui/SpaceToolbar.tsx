@@ -5,7 +5,7 @@ type ToolsPanelProps = {
     toggleTools?: () => void;
 };
 
-export const ToolsPanel: React.FC<ToolsPanelProps> = ({ toolsOpen }) => (
+export const ToolsPanel: React.FC<ToolsPanelProps> = () => (
     <Stack>
         <Button variant="outline">Инструмент 1</Button>
         <Button variant="outline">Инструмент 2</Button>

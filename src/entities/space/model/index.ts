@@ -1,1 +1,1 @@
-export * from './Space';
+export type * from './Space';

@@ -3,6 +3,7 @@
     "private": true,
     "version": "0.0.0",
     "type": "module",
+    "npmClient": "yarn",
     "scripts": {
         "prepare": "husky install",
         "postinstall": "yarn prepare",
