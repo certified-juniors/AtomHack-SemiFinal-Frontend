@@ -1,33 +1,13 @@
-import type { Space } from '../../';
 import { SpaceCard } from '../SpaceCard';
 
-import styles from './SpaceList.module.scss';
+import type { SpaceListProps } from './types';
 
-type SpaceListProps = {
-    spaces: Space[];
-    currentSpaceId?: number | string;
-    onSelect: (id: number) => void;
-    onEdit: (id: number, name: string) => void;
-    onDelete: (id: number) => void;
+export const SpaceList = ({ spaces, onEdit, onDelete }: SpaceListProps) => {
+    return (
+        <div>
+            {spaces.map((space) => (
+                <SpaceCard key={space.id} {...space} onEdit={onEdit} onDelete={onDelete} />
+            ))}
+        </div>
+    );
 };
-
-export const SpaceList: React.FC<SpaceListProps> = ({
-    spaces,
-    onSelect,
-    onEdit,
-    onDelete,
-    currentSpaceId,
-}) => (
-    <div className={styles.spaceList}>
-        {spaces.map((space) => (
-            <SpaceCard
-                key={space.id}
-                isSelected={space.id == currentSpaceId}
-                space={space}
-                onSelect={onSelect}
-                onEdit={onEdit}
-                onDelete={onDelete}
-            />
-        ))}
-    </div>
-);

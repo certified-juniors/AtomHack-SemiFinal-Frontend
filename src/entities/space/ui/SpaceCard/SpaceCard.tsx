@@ -1,54 +1,87 @@
-import { Group, ActionIcon, Text } from '@mantine/core';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { Button, Flex, Group, Modal, TextInput, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import type { Space } from '../../model';
+import type { SpaceProps } from './types';
 
-import styles from './SpaceCard.module.scss';
+export const SpaceCard = ({ id, name, onEdit, onDelete }: SpaceProps) => {
+    const [updatedName, setUpdatedName] = useState<string>(name);
 
-type SpaceCardProps = {
-    space: Space;
-    isSelected: boolean;
-    onSelect: (id: number) => void;
-    onEdit: (id: number, name: string) => void;
-    onDelete: (id: number) => void;
+    const navigate = useNavigate();
+
+    const [deleteModalOpened, { open: toggleOpenDeleteModal, close: toggleCloseDeleteModal }] =
+        useDisclosure();
+    const [editModalOpened, { open: toggleOpenEditModal, close: toggleCloseEditModal }] =
+        useDisclosure();
+
+    return (
+        <Flex
+            direction="row"
+            justify="space-between"
+            align="center"
+            onClick={() => navigate(`/space/${id}`)}
+            p={10}
+            style={{
+                cursor: 'pointer',
+                borderRadius: '8px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                transition: 'box-shadow 0.3s ease-in-out',
+            }}
+        >
+            <Title order={3}>{name}</Title>
+
+            <Button.Group>
+                <Button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleOpenDeleteModal();
+                    }}
+                    bg="red"
+                >
+                    Удалить
+                </Button>
+                <Button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleOpenEditModal();
+                    }}
+                >
+                    Изменить
+                </Button>
+            </Button.Group>
+
+            <Modal
+                opened={deleteModalOpened}
+                onClose={toggleCloseDeleteModal}
+                onClick={(e) => e.stopPropagation()}
+                title="Удалить пространтсво"
+            >
+                <Group justify="flex-end">
+                    <Button onClick={() => onDelete(id)} bg="red">
+                        Удалить
+                    </Button>
+                    <Button onClick={toggleCloseDeleteModal}>Отменить</Button>
+                </Group>
+            </Modal>
+
+            <Modal
+                opened={editModalOpened}
+                onClose={toggleCloseEditModal}
+                onClick={(e) => e.stopPropagation()}
+                title="Изменить пространство"
+            >
+                <TextInput
+                    label="Название пространства"
+                    value={updatedName}
+                    onChange={(e) => setUpdatedName(e.target.value)}
+                />
+
+                <Group justify="flex-end" gap="10" mt="md">
+                    <Button onClick={() => onEdit(id, updatedName)}>Изменить</Button>
+                    <Button onClick={toggleCloseEditModal}>Отменить</Button>
+                </Group>
+            </Modal>
+        </Flex>
+    );
 };
-
-export const SpaceCard: React.FC<SpaceCardProps> = ({
-    space,
-    isSelected,
-    onSelect,
-    onEdit,
-    onDelete,
-}) => (
-    <div
-        className={isSelected ? styles.selectedCard : styles.card}
-        onClick={() => {
-            onSelect(space.id);
-        }}
-    >
-        <div>
-            <Text size="lg">{space.name}</Text>
-            <Text size="sm">Дата создания: {space.createdAt}</Text>
-        </div>
-        <Group justify="flex-end">
-            <ActionIcon
-                variant="filled"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit(space.id, space.name);
-                }}
-            >
-                <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon
-                variant="filled"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete(space.id);
-                }}
-            >
-                <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
-            </ActionIcon>
-        </Group>
-    </div>
-);
