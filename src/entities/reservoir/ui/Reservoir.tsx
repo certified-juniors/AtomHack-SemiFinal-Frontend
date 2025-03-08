@@ -1,20 +1,11 @@
 import { Handle, Position } from '@xyflow/react';
-import { useState, useEffect } from 'react';
 import { MdOutlineOilBarrel as ReservoirIcon } from 'react-icons/md';
 
-export const Reservoir = () => {
-    const [level, setLevel] = useState(0);
+import type { Node } from '@/src/features';
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setLevel(() => {
-                const newLevel = Math.floor(Math.random() * 11);
-                return newLevel;
-            });
-        }, 500);
-
-        return () => clearInterval(interval);
-    }, []);
+// TODO: Make more informative
+export const Reservoir = ({ data }: Node) => {
+    const { level = 5 } = data;
 
     return (
         <div

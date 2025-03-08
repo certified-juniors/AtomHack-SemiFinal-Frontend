@@ -6,7 +6,7 @@ export const createNewPipe = async (
     diameter: number,
     sourceId: number,
     targetId: number
-): Promise<{ pipe: PipeType }> => {
+): Promise<PipeType> => {
     try {
         const response = await apiInstance.post('/pipes', { diameter, sourceId, targetId });
         return response.data;

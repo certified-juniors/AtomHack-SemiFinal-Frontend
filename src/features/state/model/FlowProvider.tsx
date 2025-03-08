@@ -1,8 +1,12 @@
-import { nanoid } from 'nanoid';
 import type { ReactNode } from 'react';
 import { createContext, useReducer } from 'react';
 
+import { formatReservoirsToNodes } from '@/src/shared/lib/parsers';
+import { formatPipesToEdges } from '@/src/shared/lib/parsers/formatPipesToEdges';
+
 import type { FlowAction, FlowState } from './actions';
+
+const STEP = 150;
 
 export const FlowContext = createContext<{
     state: FlowState;
@@ -22,11 +26,10 @@ export const flowReducer = (state: FlowState, action: FlowAction): FlowState => 
                 nodes: [
                     ...state.nodes,
                     {
-                        id: nanoid(),
+                        id: action.payload.id,
                         position: { x: 100, y: 100 },
                         type: 'reservoir',
-                        data: { label: 'Node' },
-                        ...action.payload,
+                        data: action.payload.data,
                     },
                 ],
             };
@@ -55,8 +58,17 @@ export const flowReducer = (state: FlowState, action: FlowAction): FlowState => 
             };
         case 'CLEAR_GRAPH':
             return initialState;
-        case 'LOAD_STATE':
-            return action.payload;
+        case 'LOAD_STATE': {
+            const { reservoirs, pipes } = action.payload;
+
+            const formattedNodes = formatReservoirsToNodes(reservoirs);
+            const formattedPipes = formatPipesToEdges(pipes);
+
+            return {
+                nodes: formattedNodes,
+                edges: formattedPipes,
+            };
+        }
         default:
             return state;
     }
