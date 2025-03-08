@@ -20,11 +20,11 @@ function App() {
                         <Route path="/space/:id" element={<FlowChart />} />
                         <Route path="" element={<Spaces />} />
 
-                        <Route path="*" element={<ErrorPage {...ERROR_VARIANT[404]} />} />
                         <Route
                             path="internal-server-error"
                             element={<ErrorPage {...ERROR_VARIANT[500]} />}
                         />
+                        <Route path="*" element={<ErrorPage {...ERROR_VARIANT[404]} />} />
                     </Routes>
                 </BrowserRouter>
             </FlowProvider>

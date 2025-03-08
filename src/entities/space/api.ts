@@ -5,9 +5,9 @@ import type { ReservoirType } from '../reservoir';
 
 import type { SpaceType } from './model';
 
-export const getAllSpaces = async (): Promise<SpaceType[]> => {
+export const getAllSpaces = async (name?: string): Promise<SpaceType[]> => {
     try {
-        const response = await apiInstance.get('/spaces');
+        const response = await apiInstance.get('/spaces', { params: name });
 
         return response.data;
     } catch (error) {
@@ -26,7 +26,7 @@ export const getSpaceById = async (
     }
 };
 
-export const createNewSpace = async (name: string): Promise<{ space: SpaceType }> => {
+export const createNewSpace = async (name: string): Promise<SpaceType> => {
     try {
         const response = await apiInstance.post('/spaces', { name });
         return response.data;

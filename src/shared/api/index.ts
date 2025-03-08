@@ -54,14 +54,14 @@ apiInstance.interceptors.response.use(
     async (error: AxiosError<ApiErrorType>) => {
         // const originalRequest = error.config;
 
-        if (!error.response) {
-            showNotification({
-                variant: NOTIFICATION_VARIANT.ERROR,
-                message: 'Ошибка сети или сервер не доступен.',
-            });
-            window.location.pathname = '/internal-server-error';
-            return Promise.reject(error);
-        }
+        // if (!error.response) {
+        //     showNotification({
+        //         variant: NOTIFICATION_VARIANT.ERROR,
+        //         message: 'Ошибка сети или сервер не доступен.',
+        //     });
+        //     window.location.pathname = '/internal-server-error';
+        //     return Promise.reject(error);
+        // }
 
         // if (error.response.status === 401 && error.config && !error.config._isRetry) {
         //     originalRequest._isRetry = true;

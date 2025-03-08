@@ -58,7 +58,13 @@ export const SpaceCard = ({ id, name, onEdit, onDelete }: SpaceProps) => {
                 title="Удалить пространтсво"
             >
                 <Group justify="flex-end">
-                    <Button onClick={() => onDelete(id)} bg="red">
+                    <Button
+                        onClick={() => {
+                            onDelete(id);
+                            toggleCloseDeleteModal();
+                        }}
+                        bg="red"
+                    >
                         Удалить
                     </Button>
                     <Button onClick={toggleCloseDeleteModal}>Отменить</Button>
@@ -78,7 +84,14 @@ export const SpaceCard = ({ id, name, onEdit, onDelete }: SpaceProps) => {
                 />
 
                 <Group justify="flex-end" gap="10" mt="md">
-                    <Button onClick={() => onEdit(id, updatedName)}>Изменить</Button>
+                    <Button
+                        onClick={() => {
+                            onEdit(id, updatedName);
+                            toggleCloseEditModal();
+                        }}
+                    >
+                        Изменить
+                    </Button>
                     <Button onClick={toggleCloseEditModal}>Отменить</Button>
                 </Group>
             </Modal>
