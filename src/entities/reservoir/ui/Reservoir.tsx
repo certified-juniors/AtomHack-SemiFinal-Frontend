@@ -4,9 +4,7 @@ import { MdOutlineOilBarrel as ReservoirIcon } from 'react-icons/md';
 import type { Node } from '@/src/features';
 
 // TODO: Make more informative
-export const Reservoir = ({ data }: Node) => {
-    const { level = 5 } = data;
-
+export const Reservoir = ({ data }: Partial<Node>) => {
     return (
         <div
             style={{
@@ -57,7 +55,7 @@ export const Reservoir = ({ data }: Node) => {
                     position: 'absolute',
                     bottom: 0,
                     width: '100%',
-                    height: `${(level / 10) * 100}%`,
+                    height: `${((data?.level || 5) / 10) * 100}%`,
                     backgroundColor: 'dodgerblue',
                     transition: 'height 0.5s ease-in-out',
                 }}

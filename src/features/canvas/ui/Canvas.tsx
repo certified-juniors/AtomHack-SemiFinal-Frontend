@@ -1,15 +1,17 @@
 import { Button, Flex, Modal, NumberInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useDisclosure } from '@mantine/hooks';
-import type { Edge } from '@xyflow/react';
+import type { Edge, NodeChange } from '@xyflow/react';
 import { applyNodeChanges, applyEdgeChanges, Background, ReactFlow, addEdge } from '@xyflow/react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { createNewPipe, getSpaceById, Pipe, Reservoir } from '@/src/entities';
+import { deleteReservoirById } from '@/src/entities/reservoir/api';
 import showNotification from '@/src/shared/lib/notifications';
 import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
 
+import type { Node } from '../../state';
 import { useFlow } from '../../state';
 
 export const FlowCanvas = () => {
@@ -72,9 +74,48 @@ export const FlowCanvas = () => {
         form.reset();
     };
 
+    const handleChangeNodes = async (nodes: NodeChange<Node>[]) => {
+        try {
+            for (const node of nodes) {
+                const { id, type } = node;
+
+                if (!id) continue;
+
+                switch (type) {
+                    case 'remove': {
+                        const numericId = Number(id);
+                        if (isNaN(numericId)) break;
+
+                        const response = await deleteReservoirById(numericId);
+                        showNotification({
+                            variant: NOTIFICATION_VARIANT.SUCCESS,
+                            message: response,
+                        });
+
+                        dispatch({ type: 'REMOVE_NODE', payload: id });
+                        break;
+                    }
+
+                    default:
+                        dispatch({
+                            type: 'UPDATE_NODE',
+                            payload: applyNodeChanges(nodes, state.nodes),
+                        });
+                }
+            }
+        } catch (error) {
+            showNotification({
+                variant: NOTIFICATION_VARIANT.ERROR,
+                message: (error as Error).message,
+            });
+        }
+    };
+
     useEffect(() => {
         (async () => {
             try {
+                if (!id) dispatch({ type: 'LOAD_STATE', payload: { reservoirs: [], pipes: [] } });
+
                 const { reservoirs, pipes } = await getSpaceById(Number(id));
 
                 dispatch({ type: 'LOAD_STATE', payload: { reservoirs, pipes } });
@@ -85,24 +126,23 @@ export const FlowCanvas = () => {
                 });
             }
         })();
-    }, []);
+    }, [dispatch, id]);
 
     return (
-        <Flex w="100%" h="100vh">
+        <Flex w="100%" h="100vh" style={{ zIndex: 1000 }}>
             <ReactFlow
                 edgeTypes={edgeTypes}
                 nodeTypes={nodeTypes}
                 nodes={state.nodes}
                 edges={state.edges}
-                onNodesChange={(nodes) =>
-                    dispatch({ type: 'UPDATE_NODE', payload: applyNodeChanges(nodes, state.nodes) })
-                }
-                onEdgesChange={(edges) =>
+                selectionOnDrag
+                onNodesChange={handleChangeNodes}
+                onEdgesChange={(edges) => {
                     dispatch({
                         type: 'UPDATE_EDGES',
                         payload: applyEdgeChanges(edges, state.edges),
-                    })
-                }
+                    });
+                }}
                 onConnect={handleConnectPipes}
             >
                 <Background />
@@ -111,7 +151,7 @@ export const FlowCanvas = () => {
             <Modal opened={opened} onClose={close} title="Введите параметры соединения">
                 <form onSubmit={form.onSubmit(handleConfirmConnection)}>
                     <NumberInput
-                        label="Диаметр трубы"
+                        label="Диаметр трубы (м)"
                         {...form.getInputProps('diameter')}
                         min={1}
                         max={100}

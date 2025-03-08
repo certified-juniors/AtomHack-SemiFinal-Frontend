@@ -9,7 +9,7 @@ export const getAllSpaces = async (name?: string): Promise<SpaceType[]> => {
     try {
         const response = await apiInstance.get('/spaces', { params: name });
 
-        return response.data;
+        return response.data.content;
     } catch (error) {
         throw new Error(error instanceof Error ? error.message : 'Неизвестная ошибка');
     }

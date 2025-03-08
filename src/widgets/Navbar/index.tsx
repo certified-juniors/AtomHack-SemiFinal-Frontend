@@ -40,7 +40,7 @@ export const Navbar = () => {
         } catch (error) {
             showNotification({
                 variant: NOTIFICATION_VARIANT.ERROR,
-                message: error.message as string,
+                message: (error as Error).message as string,
             });
         } finally {
             setLoading(false);

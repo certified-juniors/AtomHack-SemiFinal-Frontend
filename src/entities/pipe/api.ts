@@ -24,9 +24,10 @@ export const updatePipeById = async (id: number, diameter: number): Promise<{ pi
     }
 };
 
-export const deletePipeById = async (id: number) => {
+export const deletePipeById = async (id: number): Promise<string> => {
     try {
-        await apiInstance.delete(`/pipes/${id}`);
+        const response = await apiInstance.delete(`/pipes/${id}`);
+        return response.data;
     } catch (error) {
         throw new Error(error instanceof Error ? error.message : 'Неизвестная ошибка');
     }

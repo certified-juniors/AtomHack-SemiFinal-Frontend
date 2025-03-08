@@ -1,4 +1,4 @@
-import { MantineProvider } from '@mantine/core';
+import { createTheme, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -11,14 +11,19 @@ import '@mantine/notifications/styles.css';
 import '@xyflow/react/dist/style.css';
 
 function App() {
+    const theme = createTheme({
+        fontFamily: 'Dela Gothic One, sans-serif',
+    });
+
     return (
-        <MantineProvider>
+        <MantineProvider theme={theme}>
             <Notifications />
             <FlowProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/space/:id" element={<FlowChart />} />
-                        <Route path="" element={<Spaces />} />
+                        <Route path="" element={<Spaces />}>
+                            <Route path="/space/:id" element={<FlowChart />} />
+                        </Route>
 
                         <Route
                             path="internal-server-error"

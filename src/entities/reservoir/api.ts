@@ -23,9 +23,10 @@ export const updateReservoirById = async (
     }
 };
 
-export const deleteReservoirById = async (id: number) => {
+export const deleteReservoirById = async (id: number): Promise<string> => {
     try {
-        await apiInstance.delete(`/reservoirs/${id}`);
+        const response = await apiInstance.delete(`/reservoirs/${id}`);
+        return response.data;
     } catch (error) {
         throw new Error(error instanceof Error ? error.message : 'Неизвестная ошибка');
     }

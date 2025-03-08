@@ -1,17 +1,16 @@
-import { Button, Flex, Group, Modal, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Button, Flex, Group, Modal, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
+import { FiChevronsRight as ChevronRightIcon } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
 import type { SpaceProps } from './types';
 
-export const SpaceCard = ({ id, name, onEdit, onDelete }: SpaceProps) => {
+export const SpaceCard = ({ id, name, onEdit }: SpaceProps) => {
     const [updatedName, setUpdatedName] = useState<string>(name);
 
     const navigate = useNavigate();
 
-    const [deleteModalOpened, { open: toggleOpenDeleteModal, close: toggleCloseDeleteModal }] =
-        useDisclosure();
     const [editModalOpened, { open: toggleOpenEditModal, close: toggleCloseEditModal }] =
         useDisclosure();
 
@@ -21,55 +20,26 @@ export const SpaceCard = ({ id, name, onEdit, onDelete }: SpaceProps) => {
             justify="space-between"
             align="center"
             onClick={() => navigate(`/space/${id}`)}
-            p={10}
+            p={4}
             style={{
                 cursor: 'pointer',
-                borderRadius: '8px',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                transition: 'box-shadow 0.3s ease-in-out',
+                borderRadius: '5px',
             }}
         >
-            <Title order={3}>{name}</Title>
+            <Text>{name}</Text>
 
-            <Button.Group>
-                <Button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        toggleOpenDeleteModal();
-                    }}
-                    bg="red"
-                >
-                    Удалить
-                </Button>
-                <Button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        toggleOpenEditModal();
-                    }}
-                >
-                    Изменить
-                </Button>
-            </Button.Group>
+            <ActionIcon bg="transparent">
+                <ChevronRightIcon size={20} />
+            </ActionIcon>
 
-            <Modal
-                opened={deleteModalOpened}
-                onClose={toggleCloseDeleteModal}
-                onClick={(e) => e.stopPropagation()}
-                title="Удалить пространтсво"
+            {/* <Button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    toggleOpenEditModal();
+                }}
             >
-                <Group justify="flex-end">
-                    <Button
-                        onClick={() => {
-                            onDelete(id);
-                            toggleCloseDeleteModal();
-                        }}
-                        bg="red"
-                    >
-                        Удалить
-                    </Button>
-                    <Button onClick={toggleCloseDeleteModal}>Отменить</Button>
-                </Group>
-            </Modal>
+                Изменить
+            </Button> */}
 
             <Modal
                 opened={editModalOpened}

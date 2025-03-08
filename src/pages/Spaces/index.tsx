@@ -1,6 +1,7 @@
-import { Flex, Skeleton } from '@mantine/core';
+import { AppShell, Burger, Flex, Skeleton, Space, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 
 import type { SpaceType } from '@/src/entities';
 import { createNewSpace, getAllSpaces, SpaceList, updateSpaceById } from '@/src/entities';
@@ -11,6 +12,7 @@ import { Search } from '@/src/widgets';
 export const Spaces = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [spaces, setSpaces] = useState<SpaceType[]>([]);
+    const [opened, { toggle }] = useDisclosure();
     const [searchParams, setSearchParams] = useSearchParams();
     const defaultSearch = searchParams.get('name') || '';
     const [search, setSearch] = useState(defaultSearch);
@@ -119,30 +121,72 @@ export const Spaces = () => {
     const skeletons = Array(5).fill(null);
 
     return (
-        <Flex direction="column" gap={10} p={20}>
-            <Search
-                onCreate={handleCreateSpace}
-                spacesNames={[...new Set(spaces.map((space) => space.name))]}
-                search={search}
-                onSearch={(value) => {
-                    setSearch(value);
-                    handleSearchSpace(value);
-                }}
-            />
+        <AppShell
+            header={{ height: 60 }}
+            navbar={{
+                width: '25vw',
+                breakpoint: 'lg',
+                collapsed: {
+                    desktop: !opened,
+                    mobile: !opened,
+                },
+            }}
+            aside={{
+                width: 80,
+                breakpoint: 'xs',
+            }}
+        >
+            <AppShell.Header p="10px">
+                <Flex align="center">
+                    <Burger opened={opened} onClick={toggle} size="sm" />
+                    <Space w={20} />
+                    <Title order={2}>Водокал</Title>
+                </Flex>
+            </AppShell.Header>
+            <AppShell.Navbar>
+                <Flex direction="column" gap={10} p={20}>
+                    <Search
+                        onCreate={handleCreateSpace}
+                        spacesNames={[...new Set(spaces.map((space) => space.name))]}
+                        search={search}
+                        onSearch={(value) => {
+                            setSearch(value);
+                            handleSearchSpace(value);
+                        }}
+                    />
 
-            {isLoading ? (
-                skeletons.map((_, index) => (
-                    <Skeleton key={index} height={80} visible={isLoading}>
-                        <div style={{ height: '80px' }} />
-                    </Skeleton>
-                ))
-            ) : (
-                <SpaceList
-                    spaces={spaces}
-                    onEdit={handleUpdateSpace}
-                    onDelete={handleDeleteSpace}
-                />
-            )}
-        </Flex>
+                    {isLoading ? (
+                        skeletons.map((_, index) => (
+                            <Skeleton key={index} height={80} visible={isLoading}>
+                                <div style={{ height: '80px' }} />
+                            </Skeleton>
+                        ))
+                    ) : (
+                        <SpaceList
+                            spaces={spaces}
+                            onEdit={handleUpdateSpace}
+                            onDelete={handleDeleteSpace}
+                        />
+                    )}
+                </Flex>
+            </AppShell.Navbar>
+
+            {/* <div
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: -1,
+                    backgroundImage: 'url(./images/landing.webp)',
+                    backgroundSize: '100% 100%',
+                    backgroundPosition: 'center',
+                    filter: 'blur(4px)',
+                }}
+            /> */}
+
+            <Outlet />
+        </AppShell>
     );
 };

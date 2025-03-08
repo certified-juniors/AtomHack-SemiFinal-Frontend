@@ -6,8 +6,6 @@ import { formatPipesToEdges } from '@/src/shared/lib/parsers/formatPipesToEdges'
 
 import type { FlowAction, FlowState } from './actions';
 
-const STEP = 150;
-
 export const FlowContext = createContext<{
     state: FlowState;
     dispatch: React.Dispatch<FlowAction>;
