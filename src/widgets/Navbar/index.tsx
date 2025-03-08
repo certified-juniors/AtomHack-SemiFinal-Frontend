@@ -1,91 +1,71 @@
-import { Button, Text } from '@mantine/core';
-import cn from 'classnames';
+import { ActionIcon, Flex, Modal, TextInput, Button } from '@mantine/core';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { IoAddCircleOutline } from 'react-icons/io5';
+import { useParams } from 'react-router-dom';
 
-import type { Space } from '../../entities/space';
-import { EditSpaceModal, AddSpaceModal, SpaceList } from '../../entities/space';
-
-import styles from './styles.module.scss';
-import { ToolsPanel } from './ui/SpaceToolbar';
+import { postNewReservoir } from '@/src/entities/reservoir/api';
+import { useFlow } from '@/src/features';
+import showNotification from '@/src/shared/lib/notifications';
+import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
 
 export const Navbar = () => {
     const { id } = useParams();
-    const navigate = useNavigate();
-
-    const selectSpace = (id: number | string) => {
-        navigate(`/space/${id}`);
-    };
-    const [spaces, setSpaces] = useState<Space[]>([
-        { id: 1, name: 'Пространство 1', createdAt: '22.01.2025' },
-        { id: 2, name: 'Пространство 2', createdAt: '22.01.2025' },
-    ]);
     const [opened, setOpened] = useState(false);
-    const [newSpaceName, setNewSpaceName] = useState('');
-    const [editedSpaceName, setEditedSpaceName] = useState('');
-    const [editingSpaceId, setEditingSpaceId] = useState<number | null>(null);
-    const [toolsOpen, setToolsOpen] = useState(false);
+    const [area, setArea] = useState('');
+    const [loading, setLoading] = useState(false);
+    const { dispatch } = useFlow();
 
-    const handleAddSpace = () => {
-        setSpaces([
-            ...spaces,
-            {
-                id: spaces.length + 1,
-                name: newSpaceName,
-                createdAt: new Date().toLocaleDateString(),
-            },
-        ]);
-        setNewSpaceName('');
-        setOpened(false);
-    };
+    const handleAddReservoir = async () => {
+        if (!area || isNaN(Number(area))) {
+            showNotification({
+                variant: NOTIFICATION_VARIANT.ERROR,
+                message: 'Введите корректную площадь',
+            });
+            return;
+        }
 
-    const handleDeleteSpace = (id: number) => {
-        setSpaces(spaces.filter((space) => space.id !== id));
-    };
+        setLoading(true);
+        try {
+            const data = await postNewReservoir(Number(id), Number(area));
 
-    const handleEditSpace = (id: number) => {
-        setSpaces(
-            spaces.map((space) => (space.id === id ? { ...space, name: editedSpaceName } : space))
-        );
-        setEditingSpaceId(null);
-        setEditedSpaceName('');
+            showNotification({
+                variant: NOTIFICATION_VARIANT.SUCCESS,
+                message: 'Резервуар успешно добавлен',
+            });
+
+            dispatch({ type: 'ADD_NODE', payload: data });
+
+            setOpened(false);
+            setArea('');
+        } catch (error) {
+            showNotification({
+                variant: NOTIFICATION_VARIANT.ERROR,
+                message: error.message as string,
+            });
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <div className={styles.navbarWrapper}>
-            <div className={styles.mainNavbar}>
-                <ToolsPanel toolsOpen={toolsOpen} toggleTools={() => setToolsOpen(!toolsOpen)} />
-                <Button className={styles.toolsButton} onClick={() => setToolsOpen(!toolsOpen)}>
-                    Пространства
-                </Button>
-            </div>
-            <div className={cn(styles.secondNavbar, toolsOpen && styles.open)}>
-                <Text size="xl">Пространства</Text>
-                <SpaceList
-                    currentSpaceId={id}
-                    spaces={spaces}
-                    onSelect={selectSpace}
-                    onEdit={setEditingSpaceId}
-                    onDelete={handleDeleteSpace}
+        <>
+            <Flex direction="column" align="center" justify="center" gap={10}>
+                <ActionIcon radius="xl" size="xl" onClick={() => setOpened(true)}>
+                    <IoAddCircleOutline size="xs" />
+                </ActionIcon>
+            </Flex>
+
+            <Modal opened={opened} onClose={() => setOpened(false)} title="Добавить резервуар">
+                <TextInput
+                    label="Площадь (м²)"
+                    placeholder="Введите площадь"
+                    value={area}
+                    onChange={(event) => setArea(event.currentTarget.value)}
                 />
-                <Button onClick={() => setOpened(true)}>Добавить пространство</Button>
-            </div>
-
-            <AddSpaceModal
-                opened={opened}
-                newSpaceName={newSpaceName}
-                setNewSpaceName={setNewSpaceName}
-                onClose={() => setOpened(false)}
-                onAdd={handleAddSpace}
-            />
-
-            <EditSpaceModal
-                editedSpaceName={editedSpaceName}
-                editingSpaceId={editingSpaceId}
-                setEditedSpaceName={setEditedSpaceName}
-                onClose={() => setEditingSpaceId(null)}
-                onEdit={handleEditSpace}
-            />
-        </div>
+                <Button fullWidth mt="md" onClick={handleAddReservoir} loading={loading}>
+                    Добавить
+                </Button>
+            </Modal>
+        </>
     );
 };

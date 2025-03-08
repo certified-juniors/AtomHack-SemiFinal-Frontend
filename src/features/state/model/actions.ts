@@ -1,3 +1,5 @@
+import type { PipeType, ReservoirType } from '@/src/entities';
+
 import type { Edge, Node } from './types';
 
 export type FlowState = {
@@ -7,7 +9,7 @@ export type FlowState = {
 
 type AddNodeAction = {
     type: 'ADD_NODE';
-    payload: Partial<Node>;
+    payload: Node;
 };
 
 type UpdateNodeAction = {
@@ -41,7 +43,10 @@ type ClearGraphAction = {
 
 type LoadStateAction = {
     type: 'LOAD_STATE';
-    payload: FlowState;
+    payload: {
+        reservoirs: ReservoirType[];
+        pipes: PipeType[];
+    };
 };
 
 export type FlowAction =

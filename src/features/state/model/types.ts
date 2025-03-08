@@ -1,7 +1,10 @@
+import type { ReservoirType } from '@/src/entities';
+
 export type Node = {
     id: string;
     position: { x: number; y: number };
-    data: { label: string };
+    type: string;
+    data: ReservoirType;
 };
 
 export type Edge = {
