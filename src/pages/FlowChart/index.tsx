@@ -1,6 +1,6 @@
-import { AppShell } from '@mantine/core';
+import { Affix, AppShell } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import type { Connection } from '@xyflow/react';
+import { Controls, type Connection } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 
 import {
@@ -12,6 +12,7 @@ import {
 } from '@/src/entities';
 import { FlowCanvas, useFlow } from '@/src/features';
 import { Navbar } from '@/src/widgets';
+import './index.css';
 
 export const FlowChart = () => {
     const [pendingConnection, setPendingConnection] = useState<Connection | null>(null);
@@ -65,7 +66,11 @@ export const FlowChart = () => {
                 reservoir={reservoir?.data}
             />
 
-            <ReservoirDeleteModal opened={deleteModalOpened} close={closeDeleteModal} />
+            <ReservoirDeleteModal
+                opened={deleteModalOpened}
+                close={closeDeleteModal}
+                reservoirId={reservoir?.id}
+            />
 
             <PipeAddModal
                 opened={addPipeModalOpened}
@@ -73,6 +78,19 @@ export const FlowChart = () => {
                 pendingConnection={pendingConnection}
                 setPendingConnection={setPendingConnection}
             />
+
+            <Affix right={'3.75rem'} className="affix-flow-chart">
+                <div className="affix-flow-chart__item">
+                    <span className="in" />
+                    Точка входа трубы
+                </div>
+                <div className="affix-flow-chart__item">
+                    <span className="out" />
+                    Точка выхода трубы
+                </div>
+            </Affix>
+
+            <Controls showInteractive={false} position="top-left" style={{ top: '3.75rem' }} />
         </>
     );
 };

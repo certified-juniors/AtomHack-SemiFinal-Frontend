@@ -1,0 +1,30 @@
+.affix-flow-chart {
+  background-color: rgb(244, 244, 244);
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.affix-flow-chart__item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.affix-flow-chart__item .in {
+  width: 12px;
+  height: 12px;
+  background-color: rgb(77, 169, 27);
+  border: 2px solid rgb(61, 146, 13);
+  border-radius: 50px;
+}
+
+.affix-flow-chart__item .out {
+  width: 12px;
+  height: 12px;
+  background-color: rgb(0, 78, 205);
+  border: 2px solid rgb(0, 67, 181);
+  border-radius: 50px;
+}

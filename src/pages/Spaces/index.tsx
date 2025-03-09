@@ -13,7 +13,7 @@ export const Spaces = () => {
         <AppShell
             header={{ height: 60 }}
             navbar={{
-                width: '25vw',
+                width: '20vw',
                 breakpoint: 'lg',
                 collapsed: {
                     desktop: !opened,
@@ -29,13 +29,20 @@ export const Spaces = () => {
                 <Flex align="center">
                     <Burger opened={opened} onClick={toggle} size="sm" />
                     <Space w={20} />
-                    <Title style={{ cursor: 'pointer' }} order={2} onClick={() => navigate('/')}>
-                        Водокал
+                    <Title
+                        style={{ cursor: 'pointer' }}
+                        order={2}
+                        onClick={() => {
+                            navigate('/');
+                            if (opened) toggle();
+                        }}
+                    >
+                        ВодоКал
                     </Title>
                 </Flex>
             </AppShell.Header>
             <AppShell.Navbar>
-                <Sidebar />
+                <Sidebar onClose={toggle} />
             </AppShell.Navbar>
 
             <AppShell.Main>

@@ -11,4 +11,5 @@ export type SpaceListProps = {
         size: number;
         currentPage: number;
     };
+    onClose: () => void;
 };
