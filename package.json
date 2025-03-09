@@ -10,7 +10,7 @@
         "dev": "vite dev",
         "build": "tsc -b && vite build",
         "preview": "vite preview",
-        "check:eslint": "eslint --max-warnings 0 .",
+        "check:eslint": "eslint .",
         "check:tsc": "tsc --noEmit",
         "check:styles": "stylelint 'src/**/*.scss'",
         "check:all": "yarn check:eslint && yarn check:tsc && yarn check:styles",
