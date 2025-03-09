@@ -1,43 +1,23 @@
-import {
-    ActionIcon,
-    Autocomplete,
-    Button,
-    Flex,
-    Group,
-    Modal,
-    TextInput,
-    Tooltip,
-} from '@mantine/core';
+import { ActionIcon, Button, Flex, Group, Modal, TextInput, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import { FaPlus as CreateIcon } from 'react-icons/fa';
 
-type SpaceAutoCompleteProps = {
-    onCreate: (name: string) => void;
-    search: string;
-    onSearch: (search: string) => void;
-    spacesNames: string[];
-};
+import type { SearchProps } from './types';
 
-export const SpaceAutoComplete = ({
-    onCreate,
-    spacesNames,
-    search,
-    onSearch,
-}: SpaceAutoCompleteProps) => {
+export const Search = ({ onCreate, search, onSearch }: SearchProps) => {
     const [isModalOpened, { open: toggleOpen, close: toggleClose }] = useDisclosure();
     const [name, setName] = useState<string>('');
 
     return (
         <Flex w="100%" align="flex-end" gap="10px">
-            <Autocomplete
+            <TextInput
                 w="100%"
                 label="Название пространства"
                 placeholder="Поиск"
                 width="100%"
-                data={spacesNames}
                 value={search}
-                onChange={(value) => onSearch(value)}
+                onChange={(event) => onSearch(event.target.value)}
             />
             <Tooltip label="Создать" withArrow position="right">
                 <ActionIcon onClick={() => toggleOpen()} w={36} h={36}>

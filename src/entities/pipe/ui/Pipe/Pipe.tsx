@@ -5,9 +5,11 @@ import { useFlow } from '@/src/features';
 import showNotification from '@/src/shared/lib/notifications';
 import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
 
-import { deletePipeById } from '../api';
+import { deletePipeById } from '../../api';
 
-export const Pipe = ({ id, sourceX, sourceY, targetX, targetY }) => {
+import type { PipeProps } from './types';
+
+export const Pipe = ({ id, sourceX, sourceY, targetX, targetY }: PipeProps) => {
     const { dispatch } = useFlow();
 
     const midX = (sourceX + targetX) / 2;
@@ -30,7 +32,7 @@ export const Pipe = ({ id, sourceX, sourceY, targetX, targetY }) => {
 
             dispatch({
                 type: 'REMOVE_EDGE',
-                payload: id,
+                payload: String(id),
             });
         } catch (error) {
             showNotification({
@@ -43,7 +45,7 @@ export const Pipe = ({ id, sourceX, sourceY, targetX, targetY }) => {
     return (
         <>
             <BaseEdge
-                id={id}
+                id={String(id)}
                 path={edgePath.join(' ')}
                 style={{
                     stroke: 'gray',

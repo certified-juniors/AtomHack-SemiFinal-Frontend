@@ -1,4 +1,4 @@
-const ERROR_VARIANT = {
+export const ERROR_VARIANT = {
     404: {
         title: 'Ошибка 404',
         subtitle:
@@ -23,5 +23,3 @@ const ERROR_VARIANT = {
         buttonText: 'Перезагрузить страницу',
     },
 };
-
-export default ERROR_VARIANT;

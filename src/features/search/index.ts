@@ -1,1 +1,1 @@
-export * from './SpaceAutoComplete';
+export * from './Search';

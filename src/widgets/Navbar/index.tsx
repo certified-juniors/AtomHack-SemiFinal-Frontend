@@ -1,71 +1,56 @@
-import { ActionIcon, Flex, Modal, TextInput, Button } from '@mantine/core';
-import { useState } from 'react';
-import { IoAddCircleOutline } from 'react-icons/io5';
-import { useParams } from 'react-router-dom';
+import { ActionIcon, Flex, Tooltip, Divider } from '@mantine/core';
+import {
+    FaPlus as AddIcon,
+    FaRegEdit as EditIcon,
+    FaInfo as InfoIcon,
+    FaTrashAlt as RemoveIcon,
+} from 'react-icons/fa';
 
-import { postNewReservoir } from '@/src/entities/reservoir/api';
 import { useFlow } from '@/src/features';
-import showNotification from '@/src/shared/lib/notifications';
-import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
 
-export const Navbar = () => {
-    const { id } = useParams();
-    const [opened, setOpened] = useState(false);
-    const [area, setArea] = useState('');
-    const [loading, setLoading] = useState(false);
-    const { dispatch } = useFlow();
+import type { NavbarProps } from './types';
 
-    const handleAddReservoir = async () => {
-        if (!area || isNaN(Number(area))) {
-            showNotification({
-                variant: NOTIFICATION_VARIANT.ERROR,
-                message: 'Введите корректную площадь',
-            });
-            return;
-        }
-
-        setLoading(true);
-        try {
-            const data = await postNewReservoir(Number(id), Number(area));
-
-            showNotification({
-                variant: NOTIFICATION_VARIANT.SUCCESS,
-                message: 'Резервуар успешно добавлен',
-            });
-
-            dispatch({ type: 'ADD_NODE', payload: data });
-
-            setOpened(false);
-            setArea('');
-        } catch (error) {
-            showNotification({
-                variant: NOTIFICATION_VARIANT.ERROR,
-                message: (error as Error).message as string,
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+export const Navbar = ({
+    toggleInfoModal,
+    toggleEditModal,
+    toggleCreateModal,
+    toggleDeleteModal,
+}: NavbarProps) => {
+    const {
+        state: { selectedNode },
+    } = useFlow();
 
     return (
-        <>
-            <Flex direction="column" align="center" justify="center" gap={10}>
-                <ActionIcon radius="xl" size="xl" onClick={() => setOpened(true)}>
-                    <IoAddCircleOutline size="xs" />
+        <Flex direction="column" align="center" gap={10} h="100%">
+            <Tooltip label="Добавить резервуар" position="left">
+                <ActionIcon radius="xl" size="36px" onClick={toggleCreateModal}>
+                    <AddIcon />
                 </ActionIcon>
-            </Flex>
+            </Tooltip>
 
-            <Modal opened={opened} onClose={() => setOpened(false)} title="Добавить резервуар">
-                <TextInput
-                    label="Площадь (м²)"
-                    placeholder="Введите площадь"
-                    value={area}
-                    onChange={(event) => setArea(event.currentTarget.value)}
-                />
-                <Button fullWidth mt="md" onClick={handleAddReservoir} loading={loading}>
-                    Добавить
-                </Button>
-            </Modal>
-        </>
+            <Divider w="100%" color="black" />
+
+            {selectedNode && (
+                <>
+                    <Tooltip label="Информация о резервуаре" position="left">
+                        <ActionIcon radius="xl" size="36px" onClick={toggleInfoModal}>
+                            <InfoIcon />
+                        </ActionIcon>
+                    </Tooltip>
+
+                    <Tooltip label="Редактировать резервуар" position="left">
+                        <ActionIcon radius="xl" size="36px" onClick={toggleEditModal}>
+                            <EditIcon />
+                        </ActionIcon>
+                    </Tooltip>
+
+                    <Tooltip label="Удалить резервуар" position="left">
+                        <ActionIcon radius="xl" size="36px" bg="red" onClick={toggleDeleteModal}>
+                            <RemoveIcon />
+                        </ActionIcon>
+                    </Tooltip>
+                </>
+            )}
+        </Flex>
     );
 };

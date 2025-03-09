@@ -11,10 +11,7 @@ export const postNewReservoir = async (spaceId: number, area: number): Promise<R
     }
 };
 
-export const updateReservoirById = async (
-    id: number,
-    area: number
-): Promise<{ reservoir: ReservoirType }> => {
+export const updateReservoirById = async (id: number, area: number): Promise<ReservoirType> => {
     try {
         const response = await apiInstance.put(`/reservoirs/${id}`, { area });
         return response.data;

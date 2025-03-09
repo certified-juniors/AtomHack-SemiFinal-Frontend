@@ -3,8 +3,9 @@ import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { FlowProvider } from './features';
-import { ErrorPage, FlowChart, Spaces } from './pages';
-import ERROR_VARIANT from './pages/ErrorPage/constant';
+import { ERROR_VARIANT, ErrorPage, FlowChart, Spaces } from './pages';
+import { Main } from './pages/Main';
+import { StompSocketProvider } from './shared/api/websocket/Websocket';
 
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
@@ -21,8 +22,16 @@ function App() {
             <FlowProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="" element={<Spaces />}>
-                            <Route path="/space/:id" element={<FlowChart />} />
+                        <Route element={<Spaces />}>
+                            <Route path="" element={<Main />} />
+                            <Route
+                                path="/space/:id"
+                                element={
+                                    <StompSocketProvider>
+                                        <FlowChart />
+                                    </StompSocketProvider>
+                                }
+                            />
                         </Route>
 
                         <Route

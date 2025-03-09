@@ -1,78 +1,28 @@
-import { Button, Flex, Modal, NumberInput } from '@mantine/core';
-import { useForm } from '@mantine/form';
-import { useDisclosure } from '@mantine/hooks';
-import type { Edge, NodeChange } from '@xyflow/react';
+import { Flex } from '@mantine/core';
+import type { NodeChange } from '@xyflow/react';
 import { applyNodeChanges, applyEdgeChanges, Background, ReactFlow, addEdge } from '@xyflow/react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { createNewPipe, getSpaceById, Pipe, Reservoir } from '@/src/entities';
+import { getSpaceById, Pipe, Reservoir } from '@/src/entities';
 import { deleteReservoirById } from '@/src/entities/reservoir/api';
+import { useStompSocket } from '@/src/shared/api/websocket/Websocket';
 import showNotification from '@/src/shared/lib/notifications';
 import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
 
 import type { Node } from '../../state';
 import { useFlow } from '../../state';
 
-export const FlowCanvas = () => {
-    const { state, dispatch } = useFlow();
+import type { FlowCanvasProps } from './types';
 
+export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
+    const { state, dispatch } = useFlow();
     const { id } = useParams();
 
-    const [opened, { open, close }] = useDisclosure(false);
-    const [pendingConnection, setPendingConnection] = useState<Edge | null>(null);
-
-    const form = useForm({
-        initialValues: { diameter: 0 },
-        validate: {
-            diameter: (value: number) => (value > 0 ? null : 'Диаметр должен быть больше 0'),
-        },
-    });
+    const { client, isConnected } = useStompSocket();
 
     const nodeTypes = useMemo(() => ({ reservoir: Reservoir }), []);
     const edgeTypes = useMemo(() => ({ pipe: Pipe }), []);
-
-    const handleConnectPipes = useCallback(
-        (connection) => {
-            setPendingConnection(connection);
-            open();
-        },
-        [open]
-    );
-
-    const handleConfirmConnection = async () => {
-        if (!pendingConnection) return;
-
-        const { hasErrors } = form.validate();
-        if (hasErrors) return;
-
-        try {
-            const { source, target } = pendingConnection;
-
-            const data = await createNewPipe(form.values.diameter, Number(source), Number(target));
-
-            const edge: Edge = {
-                ...pendingConnection,
-                type: 'pipe',
-                id: String(data.id),
-                data: { diameter: data.diameter },
-            };
-
-            dispatch({
-                type: 'ADD_EDGE',
-                payload: addEdge(edge, state.edges),
-            });
-        } catch (error) {
-            showNotification({
-                variant: NOTIFICATION_VARIANT.ERROR,
-                message: (error as Error).message,
-            });
-        }
-
-        close();
-        setPendingConnection(null);
-        form.reset();
-    };
 
     const handleChangeNodes = async (nodes: NodeChange<Node>[]) => {
         try {
@@ -126,7 +76,34 @@ export const FlowCanvas = () => {
                 });
             }
         })();
+
+        return () => {
+            dispatch({
+                type: 'CLEAR_GRAPH',
+            });
+        };
     }, [dispatch, id]);
+
+    const levelEventHandler = ({ body }: { body: string }) => {
+        const updatedReservoir = JSON.parse(body);
+
+        dispatch({
+            type: 'UPDATE_DATA',
+            payload: updatedReservoir,
+        });
+    };
+
+    useEffect(() => {
+        if (client) {
+            client.subscribe(`/topic/space/${id}`, levelEventHandler, { id: `${id}` });
+        }
+
+        return () => {
+            if (client) {
+                client.unsubscribe(`${id}`);
+            }
+        };
+    }, [id, isConnected]);
 
     return (
         <Flex w="100%" h="100vh" style={{ zIndex: 1000 }}>
@@ -143,24 +120,12 @@ export const FlowCanvas = () => {
                         payload: applyEdgeChanges(edges, state.edges),
                     });
                 }}
-                onConnect={handleConnectPipes}
+                onConnect={connectPipes}
             >
                 <Background />
             </ReactFlow>
 
-            <Modal opened={opened} onClose={close} title="Введите параметры соединения">
-                <form onSubmit={form.onSubmit(handleConfirmConnection)}>
-                    <NumberInput
-                        label="Диаметр трубы (м)"
-                        {...form.getInputProps('diameter')}
-                        min={1}
-                        max={100}
-                    />
-                    <Button fullWidth mt="md" type="submit">
-                        Подтвердить
-                    </Button>
-                </form>
-            </Modal>
+            {/* <PipeAddModal /> */}
         </Flex>
     );
 };

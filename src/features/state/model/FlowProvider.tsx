@@ -1,3 +1,4 @@
+import { ReactFlowProvider } from '@xyflow/react';
 import type { ReactNode } from 'react';
 import { createContext, useReducer } from 'react';
 
@@ -12,22 +13,29 @@ export const FlowContext = createContext<{
 } | null>(null);
 
 const initialState: FlowState = {
+    selectedNode: null,
+    selectedEdge: null,
     nodes: [],
     edges: [],
 };
 
 export const flowReducer = (state: FlowState, action: FlowAction): FlowState => {
     switch (action.type) {
+        case 'SELECT_NODE':
+            return {
+                ...state,
+                selectedNode: action.payload,
+            };
         case 'ADD_NODE':
             return {
                 ...state,
                 nodes: [
                     ...state.nodes,
                     {
-                        id: action.payload.id,
+                        id: String(action.payload.id),
                         position: { x: 100, y: 100 },
                         type: 'reservoir',
-                        data: action.payload.data,
+                        data: action.payload,
                     },
                 ],
             };
@@ -39,6 +47,11 @@ export const flowReducer = (state: FlowState, action: FlowAction): FlowState => 
                     (edge) => edge.source !== action.payload && edge.target !== action.payload
                 ),
             };
+        case 'SELECT_EDGE':
+            return {
+                ...state,
+                selectedEdge: action.payload,
+            };
         case 'ADD_EDGE':
             return {
                 ...state,
@@ -49,6 +62,25 @@ export const flowReducer = (state: FlowState, action: FlowAction): FlowState => 
                 ...state,
                 edges: state.edges.filter((edge) => edge.id !== action.payload),
             };
+        case 'UPDATE_DATA': {
+            const updatedNodes = state.nodes.map((node) => {
+                if (node.id === action.payload.id.toString()) {
+                    return {
+                        ...node,
+                        data: {
+                            ...node.data,
+                            ...action.payload,
+                        },
+                    };
+                }
+                return node;
+            });
+
+            return {
+                ...state,
+                nodes: updatedNodes,
+            };
+        }
         case 'UPDATE_NODE':
             return {
                 ...state,
@@ -63,6 +95,7 @@ export const flowReducer = (state: FlowState, action: FlowAction): FlowState => 
             const formattedPipes = formatPipesToEdges(pipes);
 
             return {
+                ...state,
                 nodes: formattedNodes,
                 edges: formattedPipes,
             };
@@ -79,5 +112,9 @@ type FlowProviderProps = {
 export const FlowProvider = ({ children }: FlowProviderProps) => {
     const [state, dispatch] = useReducer(flowReducer, initialState);
 
-    return <FlowContext.Provider value={{ state, dispatch }}>{children}</FlowContext.Provider>;
+    return (
+        <FlowContext.Provider value={{ state, dispatch }}>
+            <ReactFlowProvider>{children}</ReactFlowProvider>
+        </FlowContext.Provider>
+    );
 };
