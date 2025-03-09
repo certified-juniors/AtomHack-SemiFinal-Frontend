@@ -1,6 +1,6 @@
 import { Flex } from '@mantine/core';
 import type { NodeChange } from '@xyflow/react';
-import { applyNodeChanges, applyEdgeChanges, Background, ReactFlow, addEdge } from '@xyflow/react';
+import { applyNodeChanges, applyEdgeChanges, Background, ReactFlow } from '@xyflow/react';
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -85,12 +85,17 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
     }, [dispatch, id]);
 
     const levelEventHandler = ({ body }: { body: string }) => {
-        const updatedReservoir = JSON.parse(body);
-
-        dispatch({
-            type: 'UPDATE_DATA',
-            payload: updatedReservoir,
-        });
+        const { command, reservoir } = JSON.parse(body);
+        switch (command) {
+            case 'UPDATE':
+                dispatch({
+                    type: 'UPDATE_DATA',
+                    payload: reservoir,
+                });
+                break;
+            default:
+                break;
+        }
     };
 
     useEffect(() => {
@@ -124,8 +129,6 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
             >
                 <Background />
             </ReactFlow>
-
-            {/* <PipeAddModal /> */}
         </Flex>
     );
 };
