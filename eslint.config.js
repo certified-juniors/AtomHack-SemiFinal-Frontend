@@ -26,8 +26,6 @@ export default tseslint.config(
             '@typescript-eslint/no-unnecessary-type-arguments': 'warn',
             '@typescript-eslint/non-nullable-type-assertion-style': 'warn',
             '@typescript-eslint/no-unused-vars': 'error',
-            '@typescript-eslint/no-unsafe-assignment': 'warn',
-            '@typescript-eslint/no-unsafe-member-access': 'warn',
             '@typescript-eslint/unbound-method': 'off',
         },
         languageOptions: {

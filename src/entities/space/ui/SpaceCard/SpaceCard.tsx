@@ -1,54 +1,70 @@
-import { Group, ActionIcon, Text } from '@mantine/core';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { ActionIcon, Button, Flex, Group, Modal, Text, TextInput } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { useState } from 'react';
+import { FiChevronsRight as ChevronRightIcon } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
-import type { Space } from '../../model';
+import type { SpaceProps } from './types';
 
-import styles from './SpaceCard.module.scss';
+export const SpaceCard = ({ id, name, onEdit }: SpaceProps) => {
+    const [updatedName, setUpdatedName] = useState<string>(name);
 
-type SpaceCardProps = {
-    space: Space;
-    isSelected: boolean;
-    onSelect: (id: number) => void;
-    onEdit: (id: number, name: string) => void;
-    onDelete: (id: number) => void;
+    const navigate = useNavigate();
+
+    const [editModalOpened, { open: toggleOpenEditModal, close: toggleCloseEditModal }] =
+        useDisclosure();
+
+    return (
+        <Flex
+            direction="row"
+            justify="space-between"
+            align="center"
+            onClick={() => navigate(`/space/${id}`)}
+            p={4}
+            style={{
+                cursor: 'pointer',
+                borderRadius: '5px',
+            }}
+        >
+            <Text>{name}</Text>
+
+            <ActionIcon bg="transparent">
+                <ChevronRightIcon size={20} />
+            </ActionIcon>
+
+            {/* <Button
+                onClick={(e) => {
+                    e.stopPropagation();
+                    toggleOpenEditModal();
+                }}
+            >
+                Изменить
+            </Button> */}
+
+            <Modal
+                opened={editModalOpened}
+                onClose={toggleCloseEditModal}
+                onClick={(e) => e.stopPropagation()}
+                title="Изменить пространство"
+            >
+                <TextInput
+                    label="Название пространства"
+                    value={updatedName}
+                    onChange={(e) => setUpdatedName(e.target.value)}
+                />
+
+                <Group justify="flex-end" gap="10" mt="md">
+                    <Button
+                        onClick={() => {
+                            onEdit(id, updatedName);
+                            toggleCloseEditModal();
+                        }}
+                    >
+                        Изменить
+                    </Button>
+                    <Button onClick={toggleCloseEditModal}>Отменить</Button>
+                </Group>
+            </Modal>
+        </Flex>
+    );
 };
-
-export const SpaceCard: React.FC<SpaceCardProps> = ({
-    space,
-    isSelected,
-    onSelect,
-    onEdit,
-    onDelete,
-}) => (
-    <div
-        className={isSelected ? styles.selectedCard : styles.card}
-        onClick={() => {
-            onSelect(space.id);
-        }}
-    >
-        <div>
-            <Text size="lg">{space.name}</Text>
-            <Text size="sm">Дата создания: {space.createdAt}</Text>
-        </div>
-        <Group justify="flex-end">
-            <ActionIcon
-                variant="filled"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit(space.id, space.name);
-                }}
-            >
-                <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
-            </ActionIcon>
-            <ActionIcon
-                variant="filled"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete(space.id);
-                }}
-            >
-                <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
-            </ActionIcon>
-        </Group>
-    </div>
-);

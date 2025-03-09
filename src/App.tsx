@@ -1,29 +1,47 @@
-import { MantineProvider } from '@mantine/core';
+import { createTheme, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { ErrorPage, FlowChart, Spaces } from './pages';
-import ERROR_VARIANT from './pages/ErrorPage/constant';
+import { FlowProvider } from './features';
+import { ERROR_VARIANT, ErrorPage, FlowChart, Spaces } from './pages';
+import { Main } from './pages/Main';
+import { StompSocketProvider } from './shared/api/websocket/Websocket';
 
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@xyflow/react/dist/style.css';
 
 function App() {
-    return (
-        <MantineProvider>
-            <Notifications />
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/space/:id" element={<FlowChart />} />
-                    <Route path="" element={<Spaces />} />
+    const theme = createTheme({
+        fontFamily: 'Dela Gothic One, sans-serif',
+    });
 
-                    <Route path="*" element={<ErrorPage {...ERROR_VARIANT[404]} />} />
-                    <Route
-                        path="internal-server-error"
-                        element={<ErrorPage {...ERROR_VARIANT[500]} />}
-                    />
-                </Routes>
-            </BrowserRouter>
+    return (
+        <MantineProvider theme={theme}>
+            <Notifications />
+            <FlowProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route element={<Spaces />}>
+                            <Route path="" element={<Main />} />
+                            <Route
+                                path="/space/:id"
+                                element={
+                                    <StompSocketProvider>
+                                        <FlowChart />
+                                    </StompSocketProvider>
+                                }
+                            />
+                        </Route>
+
+                        <Route
+                            path="internal-server-error"
+                            element={<ErrorPage {...ERROR_VARIANT[500]} />}
+                        />
+                        <Route path="*" element={<ErrorPage {...ERROR_VARIANT[404]} />} />
+                    </Routes>
+                </BrowserRouter>
+            </FlowProvider>
         </MantineProvider>
     );
 }

@@ -1,91 +1,56 @@
-import { Button, Text } from '@mantine/core';
-import cn from 'classnames';
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { ActionIcon, Flex, Tooltip, Divider } from '@mantine/core';
+import {
+    FaPlus as AddIcon,
+    FaRegEdit as EditIcon,
+    FaInfo as InfoIcon,
+    FaTrashAlt as RemoveIcon,
+} from 'react-icons/fa';
 
-import type { Space } from '../../entities/space';
-import { EditSpaceModal, AddSpaceModal, SpaceList } from '../../entities/space';
+import { useFlow } from '@/src/features';
 
-import styles from './styles.module.scss';
-import { ToolsPanel } from './ui/SpaceToolbar';
+import type { NavbarProps } from './types';
 
-export const Navbar = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-
-    const selectSpace = (id: number | string) => {
-        navigate(`/space/${id}`);
-    };
-    const [spaces, setSpaces] = useState<Space[]>([
-        { id: 1, name: 'Пространство 1', createdAt: '22.01.2025' },
-        { id: 2, name: 'Пространство 2', createdAt: '22.01.2025' },
-    ]);
-    const [opened, setOpened] = useState(false);
-    const [newSpaceName, setNewSpaceName] = useState('');
-    const [editedSpaceName, setEditedSpaceName] = useState('');
-    const [editingSpaceId, setEditingSpaceId] = useState<number | null>(null);
-    const [toolsOpen, setToolsOpen] = useState(false);
-
-    const handleAddSpace = () => {
-        setSpaces([
-            ...spaces,
-            {
-                id: spaces.length + 1,
-                name: newSpaceName,
-                createdAt: new Date().toLocaleDateString(),
-            },
-        ]);
-        setNewSpaceName('');
-        setOpened(false);
-    };
-
-    const handleDeleteSpace = (id: number) => {
-        setSpaces(spaces.filter((space) => space.id !== id));
-    };
-
-    const handleEditSpace = (id: number) => {
-        setSpaces(
-            spaces.map((space) => (space.id === id ? { ...space, name: editedSpaceName } : space))
-        );
-        setEditingSpaceId(null);
-        setEditedSpaceName('');
-    };
+export const Navbar = ({
+    toggleInfoModal,
+    toggleEditModal,
+    toggleCreateModal,
+    toggleDeleteModal,
+}: NavbarProps) => {
+    const {
+        state: { selectedNode },
+    } = useFlow();
 
     return (
-        <div className={styles.navbarWrapper}>
-            <div className={styles.mainNavbar}>
-                <ToolsPanel toolsOpen={toolsOpen} toggleTools={() => setToolsOpen(!toolsOpen)} />
-                <Button className={styles.toolsButton} onClick={() => setToolsOpen(!toolsOpen)}>
-                    Пространства
-                </Button>
-            </div>
-            <div className={cn(styles.secondNavbar, toolsOpen && styles.open)}>
-                <Text size="xl">Пространства</Text>
-                <SpaceList
-                    currentSpaceId={id}
-                    spaces={spaces}
-                    onSelect={selectSpace}
-                    onEdit={setEditingSpaceId}
-                    onDelete={handleDeleteSpace}
-                />
-                <Button onClick={() => setOpened(true)}>Добавить пространство</Button>
-            </div>
+        <Flex direction="column" align="center" gap={10} h="100%">
+            <Tooltip label="Добавить резервуар" position="left">
+                <ActionIcon radius="xl" size="36px" onClick={toggleCreateModal}>
+                    <AddIcon />
+                </ActionIcon>
+            </Tooltip>
 
-            <AddSpaceModal
-                opened={opened}
-                newSpaceName={newSpaceName}
-                setNewSpaceName={setNewSpaceName}
-                onClose={() => setOpened(false)}
-                onAdd={handleAddSpace}
-            />
+            <Divider w="100%" color="black" />
 
-            <EditSpaceModal
-                editedSpaceName={editedSpaceName}
-                editingSpaceId={editingSpaceId}
-                setEditedSpaceName={setEditedSpaceName}
-                onClose={() => setEditingSpaceId(null)}
-                onEdit={handleEditSpace}
-            />
-        </div>
+            {selectedNode && (
+                <>
+                    <Tooltip label="Информация о резервуаре" position="left">
+                        <ActionIcon radius="xl" size="36px" onClick={toggleInfoModal}>
+                            <InfoIcon />
+                        </ActionIcon>
+                    </Tooltip>
+
+                    <Tooltip label="Редактировать резервуар" position="left">
+                        <ActionIcon radius="xl" size="36px" onClick={toggleEditModal}>
+                            <EditIcon />
+                        </ActionIcon>
+                    </Tooltip>
+
+                    <Tooltip label="Удалить резервуар" position="left">
+                        <ActionIcon radius="xl" size="36px" bg="red" onClick={toggleDeleteModal}>
+                            <RemoveIcon />
+                        </ActionIcon>
+                    </Tooltip>
+                </>
+            )}
+        </Flex>
     );
 };
