@@ -1,0 +1,24 @@
+.main-page__container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/bg_pipes.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.main-page__info__container {
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  padding: 30px;
+  position: absolute;
+  right: 10%;
+  top: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 40%;
+}

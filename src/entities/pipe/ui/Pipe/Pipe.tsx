@@ -53,7 +53,7 @@ export const Pipe = ({ id, sourceX, sourceY, targetX, targetY }: PipeProps) => {
                     strokeLinecap: 'round',
                     strokeLinejoin: 'round',
                     fill: 'none',
-                    opacity: 0.8,
+                    opacity: 0.4,
                 }}
             />
 

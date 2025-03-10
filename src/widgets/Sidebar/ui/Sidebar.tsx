@@ -14,7 +14,7 @@ import { Search } from '@/src/features';
 import showNotification from '@/src/shared/lib/notifications';
 import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
 
-export const Sidebar = () => {
+export const Sidebar = (props: { onClose: () => void }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [spaces, setSpaces] = useState<SpaceType[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -144,7 +144,7 @@ export const Sidebar = () => {
     const skeletons = Array(5).fill(null);
 
     return (
-        <Flex direction="column" gap={10} p={20}>
+        <Flex direction="column" gap={25} p={20}>
             <Search
                 onCreate={handleCreateSpace}
                 search={search}
@@ -157,6 +157,7 @@ export const Sidebar = () => {
                 ))
             ) : (
                 <SpaceList
+                    onClose={props.onClose}
                     pagination={paginationParams}
                     spaces={spaces}
                     onEdit={handleUpdateSpace}

@@ -14,7 +14,7 @@ export const Reservoir = ({ data }: Partial<Node>) => {
 
     const renderDataTable = () => {
         return (
-            <Table variant="vertical" c="black" withTableBorder>
+            <Table variant="vertical" c="black">
                 <Table.Tbody>
                     <Table.Tr>
                         <Table.Th>Площадь (м²)</Table.Th>
@@ -43,6 +43,8 @@ export const Reservoir = ({ data }: Partial<Node>) => {
                     backgroundColor: 'whitesmoke',
                 },
             }}
+            position="bottom"
+            withArrow
         >
             <div
                 onClick={() => {
@@ -70,9 +72,9 @@ export const Reservoir = ({ data }: Partial<Node>) => {
                     style={{
                         width: '15px',
                         height: '15px',
-                        backgroundColor: 'green',
+                        backgroundColor: '#4da91b',
                         borderRadius: '50%',
-                        border: '2px solid darkgreen',
+                        border: '2px solid #3d920d',
                         zIndex: 5,
                     }}
                 />
@@ -82,9 +84,9 @@ export const Reservoir = ({ data }: Partial<Node>) => {
                     style={{
                         width: '15px',
                         height: '15px',
-                        backgroundColor: 'blue',
+                        backgroundColor: '#004ecd',
                         borderRadius: '50%',
-                        border: '2px solid darkblue',
+                        border: '2px solid #0043b5',
                         zIndex: 5,
                     }}
                 />
@@ -94,7 +96,7 @@ export const Reservoir = ({ data }: Partial<Node>) => {
                         bottom: 0,
                         width: '100%',
                         height: `${((data?.level ?? 0) / 10) * 100}%`,
-                        backgroundColor: 'dodgerblue',
+                        backgroundColor: '#7496c0',
                         transition: 'height 0.5s ease-in-out',
                     }}
                 />

@@ -2,9 +2,13 @@ import { apiInstance } from '@/src/shared/api/index';
 
 import type { ReservoirType } from './model/Reservoir';
 
-export const postNewReservoir = async (spaceId: number, area: number): Promise<ReservoirType> => {
+export const postNewReservoir = async (
+    spaceId: number,
+    area: number,
+    startLevel: number
+): Promise<ReservoirType> => {
     try {
-        const response = await apiInstance.post('/reservoirs', { area, spaceId });
+        const response = await apiInstance.post('/reservoirs', { area, spaceId, startLevel });
         return response.data;
     } catch (error) {
         throw new Error(error instanceof Error ? error.message : 'Неизвестная ошибка');

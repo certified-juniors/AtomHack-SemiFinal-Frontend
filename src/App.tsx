@@ -1,4 +1,4 @@
-import { createTheme, MantineProvider } from '@mantine/core';
+import { colorsTuple, createTheme, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -13,7 +13,15 @@ import '@xyflow/react/dist/style.css';
 
 function App() {
     const theme = createTheme({
-        fontFamily: 'Dela Gothic One, sans-serif',
+        fontFamily: 'Inter, sans-serif',
+        headings: {
+            fontWeight: '700',
+            fontFamily: 'Jura, sans-serif',
+        },
+        primaryColor: 'blue',
+        colors: {
+            blue: colorsTuple('#547fb4'),
+        },
     });
 
     return (

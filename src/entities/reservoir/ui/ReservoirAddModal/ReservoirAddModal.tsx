@@ -16,15 +16,15 @@ export const ReservoirAddModal = ({ opened, close }: ReservoirAddModalProps) => 
 
     const form = useForm({
         mode: 'uncontrolled',
-        initialValues: { area: 20 },
+        initialValues: { area: 20, level: 0 },
         validate: {
             area: (value: number) => (value > 0 ? null : 'Площадь должна быть больше 0'),
         },
     });
 
-    const handleCreateReservoir = async ({ area }: { area: number }) => {
+    const handleCreateReservoir = async ({ area, level }: { area: number; level: number }) => {
         try {
-            const data = await postNewReservoir(Number(id), area);
+            const data = await postNewReservoir(Number(id), area, level);
 
             showNotification({
                 variant: NOTIFICATION_VARIANT.SUCCESS,
@@ -55,6 +55,14 @@ export const ReservoirAddModal = ({ opened, close }: ReservoirAddModalProps) => 
                     {...form.getInputProps('area')}
                     min={1}
                     max={50}
+                />
+
+                <NumberInput
+                    label="Начальный уровень воды (м)"
+                    placeholder="Введите уровень воды"
+                    {...form.getInputProps('level')}
+                    min={0}
+                    max={10}
                 />
                 <Button mt="md" type="submit">
                     Сохранить

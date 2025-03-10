@@ -2,29 +2,25 @@ import { ActionIcon, Button, Flex, Group, Modal, Text, TextInput } from '@mantin
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import { FiChevronsRight as ChevronRightIcon } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
 
 import type { SpaceProps } from './types';
 
-export const SpaceCard = ({ id, name, onEdit }: SpaceProps) => {
+export const SpaceCard = ({ id, name, onEdit, onClick }: SpaceProps) => {
     const [updatedName, setUpdatedName] = useState<string>(name);
 
-    const navigate = useNavigate();
-
-    const [editModalOpened, { open: toggleOpenEditModal, close: toggleCloseEditModal }] =
-        useDisclosure();
+    const [editModalOpened, { close: toggleCloseEditModal }] = useDisclosure();
 
     return (
         <Flex
             direction="row"
             justify="space-between"
             align="center"
-            onClick={() => navigate(`/space/${id}`)}
             p={4}
             style={{
                 cursor: 'pointer',
                 borderRadius: '5px',
             }}
+            onClick={onClick}
         >
             <Text>{name}</Text>
 

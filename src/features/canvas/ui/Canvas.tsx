@@ -1,6 +1,13 @@
 import { Flex } from '@mantine/core';
 import type { NodeChange } from '@xyflow/react';
-import { applyNodeChanges, applyEdgeChanges, Background, ReactFlow } from '@xyflow/react';
+import {
+    applyNodeChanges,
+    applyEdgeChanges,
+    Background,
+    ReactFlow,
+    useReactFlow,
+    MiniMap,
+} from '@xyflow/react';
 import { useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -23,6 +30,16 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
 
     const nodeTypes = useMemo(() => ({ reservoir: Reservoir }), []);
     const edgeTypes = useMemo(() => ({ pipe: Pipe }), []);
+
+    const flowInstance = useReactFlow();
+
+    useEffect(() => {
+        if (state.nodes.length > 0) {
+            setTimeout(() => {
+                flowInstance.fitView({ padding: 0.2 });
+            }, 100);
+        }
+    }, []);
 
     const handleChangeNodes = async (nodes: NodeChange<Node>[]) => {
         try {
@@ -111,7 +128,7 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
     }, [id, isConnected]);
 
     return (
-        <Flex w="100%" h="100vh" style={{ zIndex: 1000 }}>
+        <Flex w="100%" h="calc(100vh - 3.75rem)" style={{ zIndex: 1000 }}>
             <ReactFlow
                 edgeTypes={edgeTypes}
                 nodeTypes={nodeTypes}
@@ -128,6 +145,7 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
                 onConnect={connectPipes}
             >
                 <Background />
+                <MiniMap nodeStrokeWidth={3} position="bottom-left" />
             </ReactFlow>
         </Flex>
     );
