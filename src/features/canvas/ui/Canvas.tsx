@@ -1,5 +1,5 @@
 import { Flex } from '@mantine/core';
-import type { NodeChange } from '@xyflow/react';
+import type { Edge, NodeChange } from '@xyflow/react';
 import {
     applyNodeChanges,
     applyEdgeChanges,
@@ -7,8 +7,9 @@ import {
     ReactFlow,
     useReactFlow,
     MiniMap,
+    addEdge,
 } from '@xyflow/react';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getSpaceById, Pipe, Reservoir } from '@/src/entities';
@@ -28,6 +29,11 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
 
     const { client, isConnected } = useStompSocket();
 
+    const stateRef = useRef(state);
+    useEffect(() => {
+        stateRef.current = state;
+    }, [state]);
+
     const nodeTypes = useMemo(() => ({ reservoir: Reservoir }), []);
     const edgeTypes = useMemo(() => ({ pipe: Pipe }), []);
 
@@ -44,7 +50,7 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
     const handleChangeNodes = async (nodes: NodeChange<Node>[]) => {
         try {
             for (const node of nodes) {
-                // @ts-expect-error Idk why, but NodeChange<Node> doesn't have id, but it exists
+                // @ts-expect-error NodeChange<Node> почему-то не имеет id, но оно есть
                 const { id, type } = node;
 
                 if (!id) continue;
@@ -82,7 +88,10 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
     useEffect(() => {
         (async () => {
             try {
-                if (!id) dispatch({ type: 'LOAD_STATE', payload: { reservoirs: [], pipes: [] } });
+                if (!id) {
+                    dispatch({ type: 'LOAD_STATE', payload: { reservoirs: [], pipes: [] } });
+                    return;
+                }
 
                 const { reservoirs, pipes } = await getSpaceById(Number(id));
 
@@ -96,21 +105,60 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
         })();
 
         return () => {
-            dispatch({
-                type: 'CLEAR_GRAPH',
-            });
+            dispatch({ type: 'CLEAR_GRAPH' });
         };
     }, [dispatch, id]);
 
     const levelEventHandler = ({ body }: { body: string }) => {
-        const { command, reservoir } = JSON.parse(body);
+        const { command, reservoir, pipe } = JSON.parse(body);
+
         switch (command) {
             case 'UPDATE':
-                dispatch({
-                    type: 'UPDATE_DATA',
-                    payload: reservoir,
-                });
+                dispatch({ type: 'UPDATE_DATA', payload: reservoir });
                 break;
+            case 'CREATE': {
+                if (reservoir) {
+                    dispatch({ type: 'ADD_NODE', payload: reservoir });
+                }
+
+                if (pipe) {
+                    const edge: Edge = {
+                        target: String(pipe.targetId),
+                        source: String(pipe.sourceId),
+                        type: 'pipe',
+                        id: String(pipe.id),
+                        data: { diameter: pipe.diameter },
+                    };
+
+                    dispatch({
+                        type: 'ADD_EDGE',
+                        payload: addEdge(edge, stateRef.current.edges),
+                    });
+                }
+
+                break;
+            }
+            case 'DELETE': {
+                if (reservoir) {
+                    const { id } = reservoir;
+
+                    if (isNaN(id)) break;
+
+                    dispatch({ type: 'REMOVE_NODE', payload: String(id) });
+                    break;
+                }
+
+                if (pipe) {
+                    const { id } = pipe;
+
+                    if (isNaN(id)) break;
+
+                    dispatch({ type: 'REMOVE_EDGE', payload: String(id) });
+                    break;
+                }
+
+                break;
+            }
             default:
                 break;
         }
