@@ -102,12 +102,17 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
     }, [dispatch, id]);
 
     const levelEventHandler = ({ body }: { body: string }) => {
-        const updatedReservoir = JSON.parse(body);
-
-        dispatch({
-            type: 'UPDATE_DATA',
-            payload: updatedReservoir,
-        });
+        const { command, reservoir } = JSON.parse(body);
+        switch (command) {
+            case 'UPDATE':
+                dispatch({
+                    type: 'UPDATE_DATA',
+                    payload: reservoir,
+                });
+                break;
+            default:
+                break;
+        }
     };
 
     useEffect(() => {
@@ -142,8 +147,6 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
                 <Background />
                 <MiniMap nodeStrokeWidth={3} position="bottom-left" />
             </ReactFlow>
-
-            {/* <PipeAddModal /> */}
         </Flex>
     );
 };
