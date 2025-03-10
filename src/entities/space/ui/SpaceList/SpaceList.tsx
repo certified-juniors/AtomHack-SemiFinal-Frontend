@@ -1,5 +1,6 @@
 import { Flex, Pagination } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { SpaceCard } from '../SpaceCard';
 
@@ -15,6 +16,14 @@ export const SpaceList = ({
 }: SpaceListProps) => {
     const { totalPages, currentPage } = pagination;
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const [currentId, setCurrentId] = useState<string | null>(null);
+
+    useEffect(() => {
+        const newId = location.pathname.split('/')[2];
+        setCurrentId(newId);
+    }, [location]);
 
     const handleChooseSpace = (id: number) => {
         onClose();
@@ -26,6 +35,7 @@ export const SpaceList = ({
             <Flex direction="column" gap={10}>
                 {spaces.map((space) => (
                     <SpaceCard
+                        className={Number(currentId) === space.id ? 'active' : 'default'}
                         key={space.id}
                         {...space}
                         onEdit={onEdit}

@@ -4,4 +4,5 @@ export type SpaceProps = SpaceType & {
     onEdit: (id: number, name: string) => void;
     onDelete: (id: number) => void;
     onClick: () => void;
+    className?: string;
 };

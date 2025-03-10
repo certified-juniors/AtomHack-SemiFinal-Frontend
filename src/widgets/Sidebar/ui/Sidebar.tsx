@@ -144,7 +144,7 @@ export const Sidebar = (props: { onClose: () => void }) => {
     const skeletons = Array(5).fill(null);
 
     return (
-        <Flex direction="column" gap={25} p={20}>
+        <Flex direction="column" gap={25} p={20} h={'100%'}>
             <Search
                 onCreate={handleCreateSpace}
                 search={search}

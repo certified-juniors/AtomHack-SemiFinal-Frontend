@@ -1,0 +1,16 @@
+.active {
+  background-color: var(--mantine-primary-color-filled);
+  color: white;
+}
+
+.active svg {
+  stroke: white;
+}
+
+.default:hover {
+  background-color: var(--mantine-color-blue-light);
+}
+
+.default:hover .edit-icon svg {
+  stroke: grey;
+}

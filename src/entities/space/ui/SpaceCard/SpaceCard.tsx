@@ -1,42 +1,52 @@
 import { ActionIcon, Button, Flex, Group, Modal, Text, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { IconPencil } from '@tabler/icons-react';
 import { useState } from 'react';
 import { FiChevronsRight as ChevronRightIcon } from 'react-icons/fi';
 
 import type { SpaceProps } from './types';
 
-export const SpaceCard = ({ id, name, onEdit, onClick }: SpaceProps) => {
+import './space-card.css';
+
+export const SpaceCard = ({ id, name, onEdit, onClick, className = '' }: SpaceProps) => {
     const [updatedName, setUpdatedName] = useState<string>(name);
 
-    const [editModalOpened, { close: toggleCloseEditModal }] = useDisclosure();
+    const [editModalOpened, { open: toggleOpenEditModal, close: toggleCloseEditModal }] =
+        useDisclosure();
 
     return (
-        <Flex
-            direction="row"
-            justify="space-between"
-            align="center"
-            p={4}
-            style={{
-                cursor: 'pointer',
-                borderRadius: '5px',
-            }}
-            onClick={onClick}
-        >
-            <Text>{name}</Text>
-
-            <ActionIcon bg="transparent">
-                <ChevronRightIcon size={20} />
-            </ActionIcon>
-
-            {/* <Button
-                onClick={(e) => {
-                    e.stopPropagation();
-                    toggleOpenEditModal();
+        <>
+            <Flex
+                direction="row"
+                justify="space-between"
+                align="center"
+                p={4}
+                style={{
+                    cursor: 'pointer',
+                    borderRadius: '5px',
                 }}
+                onClick={onClick}
+                className={className}
             >
-                Изменить
-            </Button> */}
+                <Flex direction="row" align="center" gap={5}>
+                    <ActionIcon
+                        className="edit-icon"
+                        bg="transparent"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleOpenEditModal();
+                        }}
+                    >
+                        <IconPencil size={20} color="transparent" />
+                    </ActionIcon>
 
+                    <Text>{name}</Text>
+                </Flex>
+
+                <ActionIcon bg="transparent">
+                    <ChevronRightIcon size={20} color="var(--mantine-color-blue-light-color)" />
+                </ActionIcon>
+            </Flex>
             <Modal
                 opened={editModalOpened}
                 onClose={toggleCloseEditModal}
@@ -58,9 +68,11 @@ export const SpaceCard = ({ id, name, onEdit, onClick }: SpaceProps) => {
                     >
                         Изменить
                     </Button>
-                    <Button onClick={toggleCloseEditModal}>Отменить</Button>
+                    <Button onClick={toggleCloseEditModal} variant="outline">
+                        Отменить
+                    </Button>
                 </Group>
             </Modal>
-        </Flex>
+        </>
     );
 };
