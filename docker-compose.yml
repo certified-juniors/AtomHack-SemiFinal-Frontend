@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   simulation-ui:
-    image: registry.sh1bari.ru/hack/simulation-ui:1.0.0 # Исправлено
+    image: registry.sh1bari.ru/atom/simulation-ui:1.0.0
     ports:
       - '3000:3000'
     environment:

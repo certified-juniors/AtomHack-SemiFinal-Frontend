@@ -13,6 +13,7 @@ export default defineConfig({
     preview: {
         port: 3000,
         host: '0.0.0.0',
+        allowedHosts: ['0.0.0.0', 'ui.hack.noxly.ru'],
     },
     resolve: {
         alias: {
