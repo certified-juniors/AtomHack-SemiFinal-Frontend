@@ -1,4 +1,5 @@
 import { Button } from '@mantine/core';
+import type { EdgeProps } from '@xyflow/react';
 import { BaseEdge, EdgeLabelRenderer } from '@xyflow/react';
 
 import { useFlow } from '@/src/features';
@@ -7,9 +8,7 @@ import { NOTIFICATION_VARIANT } from '@/src/shared/lib/notifications/types';
 
 import { deletePipeById } from '../../api';
 
-import type { PipeProps } from './types';
-
-export const Pipe = ({ id, sourceX, sourceY, targetX, targetY }: PipeProps) => {
+export const Pipe = ({ id, sourceX, sourceY, targetX, targetY }: EdgeProps) => {
     const { dispatch } = useFlow();
 
     const midX = (sourceX + targetX) / 2;
@@ -23,7 +22,7 @@ export const Pipe = ({ id, sourceX, sourceY, targetX, targetY }: PipeProps) => {
 
     const handleDeleteEdge = async () => {
         try {
-            const response = await deletePipeById(id);
+            const response = await deletePipeById(Number(id));
 
             showNotification({
                 variant: NOTIFICATION_VARIANT.SUCCESS,

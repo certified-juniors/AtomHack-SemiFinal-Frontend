@@ -8,10 +8,23 @@ export default defineConfig({
     plugins: [react()],
     server: {
         port: 3000,
+        host: '0.0.0.0',
+    },
+    preview: {
+        port: 3000,
+        host: '0.0.0.0',
     },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './'),
+        },
+    },
+    publicDir: path.resolve(__dirname, 'public'),
+    build: {
+        outDir: path.resolve(__dirname, 'dist'),
+        emptyOutDir: true,
+        rollupOptions: {
+            external: ['**/*.d.ts'],
         },
     },
 });

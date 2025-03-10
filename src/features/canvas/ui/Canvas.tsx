@@ -44,6 +44,7 @@ export const FlowCanvas = ({ connectPipes }: FlowCanvasProps) => {
     const handleChangeNodes = async (nodes: NodeChange<Node>[]) => {
         try {
             for (const node of nodes) {
+                // @ts-expect-error Idk why, but NodeChange<Node> doesn't have id, but it exists
                 const { id, type } = node;
 
                 if (!id) continue;
