@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Flex, Group, Modal, TextInput, Tooltip } from '@mantine/core';
+import { Button, Flex, Group, Modal, TextInput } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 import { FaPlus as CreateIcon } from 'react-icons/fa';
@@ -10,20 +10,18 @@ export const Search = ({ onCreate, search, onSearch }: SearchProps) => {
     const [name, setName] = useState<string>('');
 
     return (
-        <Flex w="100%" align="flex-end" gap="10px">
+        <Flex w="100%" gap="10px" direction="column">
             <TextInput
                 w="100%"
-                label="Название пространства"
-                placeholder="Поиск"
+                label="Поиск"
+                placeholder="Введите название пространства"
                 width="100%"
                 value={search}
                 onChange={(event) => onSearch(event.target.value)}
             />
-            <Tooltip label="Создать" withArrow position="right">
-                <ActionIcon onClick={() => toggleOpen()} w={36} h={36}>
-                    <CreateIcon />
-                </ActionIcon>
-            </Tooltip>
+            <Button variant="light" rightSection={<CreateIcon />} onClick={() => toggleOpen()}>
+                Создать пространство
+            </Button>
 
             <Modal
                 opened={isModalOpened}
@@ -46,7 +44,9 @@ export const Search = ({ onCreate, search, onSearch }: SearchProps) => {
                     >
                         Создать
                     </Button>
-                    <Button onClick={toggleClose}>Отменить</Button>
+                    <Button onClick={toggleClose} variant="outline">
+                        Отменить
+                    </Button>
                 </Group>
             </Modal>
         </Flex>
